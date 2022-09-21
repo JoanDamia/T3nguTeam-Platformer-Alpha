@@ -81,6 +81,7 @@ private:
 	char** args;
 	SString title;
 	SString organization;
+	const char* saveFileName;
 
 	List<Module *> modules;
 

@@ -67,6 +67,7 @@ bool App::Awake()
 	{
 		// TODO 4: Read the title from the config file
 		title.Create(configApp.child("title").child_value());
+		saveFileName = configApp.child("savefile").attribute("path").as_string();
 		win->SetTitle(title.GetString());
 
 		ListItem<Module*>* item;
