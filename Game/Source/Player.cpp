@@ -20,7 +20,9 @@ Player::~Player() {
 bool Player::Awake(pugi::xml_node& config) {
 
 	//L02: TODO 1: Initialize Player parameters
-
+	pos = iPoint(0, 0);
+	texturePath = "Assets\Textures\player1.png";
+	texture = app->tex->Load(texturePath);
 	//L02: TODO 5: Get Player parameters from XML
 
 	return true;

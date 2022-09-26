@@ -26,7 +26,9 @@ public:
 public:
 
 	//L02: TODO 1: Declare player parameters
-
+	iPoint pos;
+	const char* texturePath;
+	SDL_Texture* texture;
 };
 
 #endif // __PLAYER_H__
