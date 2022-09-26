@@ -1,5 +1,3 @@
-<!-- Config file for the game -->
-<!-- L01: DONE 1: Create configuration file-->
 <config>
   <app>
     <title>Game Development Testbed</title>
@@ -17,4 +15,12 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <audio>
+    <music volume="128"/>
+    <fx volume="128"/>
+  </audio>
+
+  <!-- L02: TODO: Add an element for the entity manager and add the player parameters -->
+  
 </config>

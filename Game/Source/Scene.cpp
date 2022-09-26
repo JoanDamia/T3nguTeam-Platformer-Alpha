@@ -5,6 +5,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -19,10 +20,12 @@ Scene::~Scene()
 {}
 
 // Called before render is available
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+
+	//L02: TODO 3: Instantiate the player using the entity manager
 
 	return ret;
 }
@@ -44,16 +47,16 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		app->render->camera.y += 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		app->render->camera.x -= 1;
 
-	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
 	app->render->DrawTexture(img, 380, 100);
