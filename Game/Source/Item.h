@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __ITEM_H__
+#define __ITEM_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -7,13 +7,12 @@
 
 struct SDL_Texture;
 
-class Player : public Entity
+class Item : public Entity
 {
 public:
 
-	Player();
-	
-	virtual ~Player();
+	Item();
+	virtual ~Item();
 
 	bool Awake();
 
@@ -25,13 +24,14 @@ public:
 
 public:
 
+	bool isPicked = false;
+
 private:
 
-	//L02: DONE 1: Declare player parameters
 	iPoint pos;
 	SDL_Texture* texture;
 	const char* texturePath;
 
 };
 
-#endif // __PLAYER_H__
+#endif // __ITEM_H__

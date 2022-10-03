@@ -5,7 +5,7 @@
   </app>
 
   <renderer>
-    <vsync value="false"/>
+    <vsync value="true"/>
   </renderer>
 
   <window>
@@ -21,6 +21,14 @@
     <fx volume="128"/>
   </audio>
 
-  <!-- L02: TODO: Add an element for the entity manager and add the player parameters -->
+  <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
+  <scene>
+    <player x="0" y="0" texturepath="Assets/Textures/player1.png"/>
+    <item x="100" y="0" texturepath="Assets/Textures/goldCoin.png"/>
+    <item x="200" y="50" texturepath="Assets/Textures/goldCoin.png"/>
+    <item x="400" y="300" texturepath="Assets/Textures/goldCoin.png"/>
+    <item x="200" y="600" texturepath="Assets/Textures/goldCoin.png"/>
+    <item x="500" y="250" texturepath="Assets/Textures/goldCoin.png"/>
+  </scene>
   
 </config>

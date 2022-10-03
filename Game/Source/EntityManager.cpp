@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include "Player.h"
+#include "Item.h"
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
@@ -31,7 +32,7 @@ bool EntityManager::Awake(pugi::xml_node& config)
 		pEntity = item->data;
 
 		if (pEntity->active == false) continue;
-		ret = item->data->Awake(config);
+		ret = item->data->Awake();
 	}
 
 	return ret;
@@ -79,7 +80,24 @@ Entity* EntityManager::CreateEntity(EntityType type)
 {
 	Entity* entity = nullptr; 
 
-	//L02: TODO 2: Instantiate entity according to the type and add the new entity to the list of Entities
+	//L02: DONE 2: Instantiate entity according to the type and add the new entoty it to the list of Entities
+
+	switch (type)
+	{
+
+	case EntityType::PLAYER:
+		entity = new Player();
+		break;
+
+	case EntityType::ITEM:
+		entity = new Item();
+		break;
+
+	default: break;
+	}
+
+	// Created entities are added to the list
+	AddEntity(entity);
 
 	return entity;
 }

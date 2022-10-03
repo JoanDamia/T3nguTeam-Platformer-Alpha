@@ -156,6 +156,7 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
+	// L03: TODO 1: This is a good place to call Load / Save methods
 
 }
 
@@ -266,3 +267,12 @@ const char* App::GetOrganization() const
 {
 	return organization.GetString();
 }
+
+// L03: TODO 1: Implement methods to request load / save and methods 
+// for the real execution of load / save (to be implemented in TODO 5 and 7)
+
+// L03: TODO 5: Implement the method LoadFromFile() to actually load a xml file
+// then call all the modules to load themselves
+
+// L03: TODO 7: Implement the xml save method SaveToFile() for current state
+// check https://pugixml.org/docs/quickstart.html#modify

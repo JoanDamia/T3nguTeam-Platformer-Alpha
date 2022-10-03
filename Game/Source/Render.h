@@ -42,6 +42,8 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	// L03: TODO 6: Declare Load / Save methods
+
 public:
 
 	SDL_Renderer* renderer;

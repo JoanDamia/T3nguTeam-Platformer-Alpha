@@ -11,6 +11,7 @@ struct Collider;
 enum class EntityType
 {
 	PLAYER,
+	ITEM,
 	UNKNOWN
 };
 
@@ -20,7 +21,7 @@ public:
 
 	Entity(EntityType type) : type(type), active(true) {}
 
-	virtual bool Awake(pugi::xml_node& config)
+	virtual bool Awake()
 	{
 		return true;
 	}
@@ -77,6 +78,7 @@ public:
 	SString name;
 	EntityType type;
 	bool active = true;
+	pugi::xml_node parameters;
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...

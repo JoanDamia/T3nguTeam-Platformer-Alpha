@@ -25,7 +25,19 @@ bool Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	//L02: TODO 3: Instantiate the player using the entity manager
+	//L02: DONE 3: Instantiate the player using the entity manager
+	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+	player->parameters = config.child("player");
+
+	// iterate all objects in the scene
+	// Check https://pugixml.org/docs/quickstart.html#access
+
+	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
+	{
+		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
+		item->parameters = itemNode;
+	}
+
 
 	return ret;
 }
@@ -33,7 +45,7 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	img = app->tex->Load("Assets/Textures/test.png");
+	//img = app->tex->Load("Assets/Textures/test.png");
 	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 	return true;
 }
@@ -47,6 +59,8 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	// L03: TODO 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
+
 	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y -= 1;
 
@@ -59,7 +73,7 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		app->render->camera.x += 1;
 
-	app->render->DrawTexture(img, 380, 100);
+	//app->render->DrawTexture(img, 380, 100);
 
 	return true;
 }

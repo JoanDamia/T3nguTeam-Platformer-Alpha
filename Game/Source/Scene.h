@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Player.h"
+#include "Item.h"
 
 struct SDL_Texture;
 
@@ -35,7 +36,8 @@ public:
 
 public:
 
-	//L02: TODO 3: Declare a Player attribute 
+	//L02: DONE 3: Declare a Player attribute 
+	Player* player;
 
 private:
 	SDL_Texture* img;
