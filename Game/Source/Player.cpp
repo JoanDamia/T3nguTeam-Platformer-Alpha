@@ -20,8 +20,8 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
-	//pos = position;
-	//texturePath = "Assets/Textures/player/idle1.png";
+	pos = position;
+	texturePath = "Assets/Textures/player/idle1.png";
 
 	//L02: DONE 5: Get Player parameters from XML
 	pos.x = parameters.attribute("x").as_int();

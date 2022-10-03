@@ -157,6 +157,8 @@ void App::PrepareUpdate()
 void App::FinishUpdate()
 {
 	// L03: TODO 1: This is a good place to call Load / Save methods
+	if (loadGameRequested == true) LoadGame();
+	if (saveGameRequested == true) SaveGame();
 
 }
 
@@ -270,9 +272,79 @@ const char* App::GetOrganization() const
 
 // L03: TODO 1: Implement methods to request load / save and methods 
 // for the real execution of load / save (to be implemented in TODO 5 and 7)
+void App::SaveGameRequest()
+{
+	saveGameRequested = true;
+}
+
+void App::LoadGameRequest()
+{
+	loadGameRequested = true;
+}
+
+
+
 
 // L03: TODO 5: Implement the method LoadFromFile() to actually load a xml file
 // then call all the modules to load themselves
+bool App::LoadGame()
+{
+	bool ret = true;
 
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->LoadState(saveGame.child("game_state").child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
+
+	loadGameRequested = false;
+
+	return ret;
+}
 // L03: TODO 7: Implement the xml save method SaveToFile() for current state
 // check https://pugixml.org/docs/quickstart.html#modify
+bool App::SaveGame()
+{
+	bool ret = true;
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else
+	{
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL && ret == true)
+		{
+			ret = item->data->SaveState(saveGame.child("game_state").child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
+
+	saveGame.save_file(SAVE_STATE_FILENAME);
+
+	saveGameRequested = false;
+
+	return ret;
+}

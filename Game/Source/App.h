@@ -6,6 +6,9 @@
 
 #include "PugiXml/src/pugixml.hpp"
 
+#define CONFIG_FILENAME		"config.xml"
+#define SAVE_STATE_FILENAME "save_game.xml"
+
 // Modules
 class Window;
 class Input;
@@ -47,6 +50,10 @@ public:
 	const char* GetOrganization() const;
 
 	// L03: TODO 1: Create methods to control that the real Load and Save happens at the end of the frame
+	void LoadGameRequest();
+	void SaveGameRequest();
+	bool LoadGame();
+	bool SaveGame();
 
 private:
 
@@ -86,6 +93,12 @@ private:
 	SString title;
 	SString organization;
 
+
+	mutable bool saveGameRequested;
+	bool loadGameRequested;
+
+	pugi::xml_document saveGame;
+
 	List<Module*> modules;
 
 	// L01: DONE 2: Create new variables from pugui namespace:
@@ -98,6 +111,9 @@ private:
 	float dt;
 
 	// L03: TODO 1: Create control variables to control that the real Load and Save happens at the end of the frame
+	mutable bool saveGameRequested;
+	bool loadGameRequested;
+    pugi::xml_document saveGame;
 };
 
 extern App* app;
