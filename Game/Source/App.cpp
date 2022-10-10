@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "EntityManager.h"
+#include "Map.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -25,6 +26,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	scene = new Scene();
 	entityManager = new EntityManager();
+	map = new Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -34,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(scene);
 	AddModule(entityManager);
+	AddModule(map);
 
 	// Render last to swap buffer
 	AddModule(render);

@@ -17,6 +17,7 @@ class Textures;
 class Audio;
 class Scene;
 class EntityManager;
+class Map;
 
 class App
 {
@@ -85,6 +86,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	EntityManager* entityManager;
+	Map* map;
 
 private:
 
