@@ -1,1 +1,16 @@
 <?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<scene />
+	<renderer>
+		<camera x="0" y="0" />
+	</renderer>
+	<entities>
+		<player>
+			<position x="7.67999983" y="22.385006" />
+		</player>
+	</entities>
+</game_state>
