@@ -36,7 +36,7 @@ void Map::Draw()
     if (mapLoaded == false)
         return;
 
-    /*
+    
     // L04: DONE 6: Iterate all tilesets and draw all their
     // images in 0,0 (you should have only one tileset for now)
 
@@ -47,22 +47,50 @@ void Map::Draw()
         app->render->DrawTexture(tileset->data->texture,0,0);
         tileset = tileset->next;
     }
-    */
+    
 
-    // L05: TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
+    // L05: DONE 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
 
-    // iterates the layers in the map
+    ListItem<MapLayer*>* mapLayerItem;
+    mapLayerItem = mapData.maplayers.start;
 
-        // L05: TODO 9: Complete the draw function
+    while (mapLayerItem != NULL) {
 
+        //L06: TODO 7: use GetProperty method to ask each layer if your “Draw” property is true.
+        if (mapLayerItem->data->properties.GetProperty("draw")->boolValue) {
+
+            for (int x = 0; x < mapLayerItem->data->width; x++)
+            {
+                for (int y = 0; y < mapLayerItem->data->height; y++)
+                {
+                    // L05: DONE 9: Complete the draw function
+                    int gid = mapLayerItem->data->Get(x, y);
+
+                    //L06: TODO 3: Obtain the tile set using GetTilesetFromTileId
+                    TileSet* tileset = GetTilesetFromTileId(gid);
+
+                    SDL_Rect r = tileset->GetTileRect(gid);
+                    iPoint pos = MapToWorld(x, y);
+
+                    app->render->DrawTexture(tileset->texture,
+                        pos.x,
+                        pos.y,
+                        &r);
+                }
+            }
+        }
+        mapLayerItem = mapLayerItem->next;
+
+    }
 }
 
-// L05: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
+// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 iPoint Map::MapToWorld(int x, int y) const
 {
     iPoint ret;
 
-    //
+    ret.x = x * mapData.tileWidth;
+    ret.y = y * mapData.tileHeight;
 
     return ret;
 }
@@ -71,10 +99,36 @@ iPoint Map::MapToWorld(int x, int y) const
 SDL_Rect TileSet::GetTileRect(int gid) const
 {
     SDL_Rect rect = { 0 };
+    int relativeIndex = gid - firstgid;
 
-    // L05: TODO 7: Get Tile rectangle
+    // L05: DONE 7: Get relative Tile rectangle
+    rect.w = tileWidth;
+    rect.h = tileHeight;
+    rect.x = margin + (tileWidth + spacing) * (relativeIndex % columns);
+    rect.y = margin + (tileWidth + spacing) * (relativeIndex / columns);
 
     return rect;
+}
+
+
+// L06: TODO 2: Implement function to the Tileset based on a tile id
+TileSet* Map::GetTilesetFromTileId(int gid) const
+{
+    TileSet* set = NULL;
+    ListItem<TileSet*>* item = mapData.tilesets.start;
+
+    while (item != NULL)
+    {
+        set = item->data;
+        if (gid < (item->data->firstgid + item->data->tilecount))
+        {
+            set = item->data;
+            break;
+        }
+        item = item->next;
+    }
+
+    return set;
 }
 
 // Called before quitting
@@ -93,8 +147,16 @@ bool Map::CleanUp()
     }
     mapData.tilesets.Clear();
 
-    // L05: TODO 2: clean up all layer data
+    // L05: DONE 2: clean up all layer data
     // Remove all layers
+    ListItem<MapLayer*>* layerItem;
+    layerItem = mapData.maplayers.start;
+
+    while (layerItem != NULL)
+    {
+        RELEASE(layerItem->data);
+        layerItem = layerItem->next;
+    }
 
     return true;
 }
@@ -123,7 +185,7 @@ bool Map::Load()
         ret = LoadTileSet(mapFileXML);
     }
 
-    // L05: TODO 4: Iterate all layers and load each of them
+    // L05: DONE 4: Iterate all layers and load each of them
     if (ret == true)
     {
         ret = LoadAllLayers(mapFileXML.child("map"));
@@ -149,8 +211,15 @@ bool Map::Load()
             tileset = tileset->next;
         }
 
-        // L05: TODO 4: LOG the info for each loaded layer
+        // L05: DONE 4: LOG the info for each loaded layer
+        ListItem<MapLayer*>* mapLayer;
+        mapLayer = mapData.maplayers.start;
 
+        while (mapLayer != NULL) {
+            LOG("id : %d name : %s", mapLayer->data->id, mapLayer->data->name.GetString());
+            LOG("Layer width : %d Layer height : %d", mapLayer->data->width, mapLayer->data->height);
+            mapLayer = mapLayer->next;
+        }
     }
 
     if (mapFileXML) mapFileXML.reset();
@@ -183,7 +252,7 @@ bool Map::LoadMap(pugi::xml_node mapFile)
     return ret;
 }
 
-// L04: TODO 4: Implement the LoadTileSet function to load the tileset properties
+// L04: DONE 4: Implement the LoadTileSet function to load the tileset properties
 bool Map::LoadTileSet(pugi::xml_node mapFile) {
 
     bool ret = true;
@@ -201,6 +270,7 @@ bool Map::LoadTileSet(pugi::xml_node mapFile) {
         set->tileWidth = tileset.attribute("tilewidth").as_int();
         set->tileHeight = tileset.attribute("tileheight").as_int();
         set->columns = tileset.attribute("columns").as_int();
+        set->tilecount = tileset.attribute("tilecount").as_int();
 
         // L04: DONE 4: Load Tileset image
         SString tmp("%s%s", mapFolder.GetString(), tileset.child("image").attribute("source").as_string());
@@ -212,29 +282,84 @@ bool Map::LoadTileSet(pugi::xml_node mapFile) {
     return ret;
 }
 
-// L05: TODO 3: Implement a function that loads a single layer layer
+// L05: DONE 3: Implement a function that loads a single layer layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
     bool ret = true;
 
     //Load the attributes
+    layer->id = node.attribute("id").as_int();
+    layer->name = node.attribute("name").as_string();
+    layer->width = node.attribute("width").as_int();
+    layer->height = node.attribute("height").as_int();
+
+    //L06: TODO 6 Call Load Propoerties
+    LoadProperties(node.child("properties"), layer->properties);
 
     //Reserve the memory for the data 
+    layer->data = new uint[layer->width * layer->height];
+    memset(layer->data, 0, layer->width * layer->height);
 
     //Iterate over all the tiles and assign the values
+    pugi::xml_node tile;
+    int i = 0;
+    for (tile = node.child("data").child("tile"); tile && ret; tile = tile.next_sibling("tile"))
+    {
+        layer->data[i] = tile.attribute("gid").as_int();
+        i++;
+    }
 
     return ret;
 }
 
-// L05: TODO 4: Iterate all layers and load each of them
+// L05: DONE 4: Iterate all layers and load each of them
 bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     bool ret = true;
 
-    // Iterates the layer nodes in the XML 
-    // 
+    for (pugi::xml_node layerNode = mapNode.child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
+    {
         //Load the layer
+        MapLayer* mapLayer = new MapLayer();
+        ret = LoadLayer(layerNode, mapLayer);
 
         //add the layer to the map
+        mapData.maplayers.Add(mapLayer);
+    }
 
     return ret;
+}
+
+// L06: TODO 6: Load a group of properties from a node and fill a list with it
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+{
+    bool ret = false;
+
+    for (pugi::xml_node propertyNode = node.child("property"); propertyNode; propertyNode = propertyNode.next_sibling("property"))
+    {
+        Properties::Property* p = new Properties::Property();
+        p->name = propertyNode.attribute("name").as_string();
+        p->type = propertyNode.attribute("type").as_string();
+        p->boolValue = propertyNode.attribute("value").as_bool();
+        properties.propertyList.Add(p);
+
+    }
+
+    return ret;
+}
+
+
+// L06: TODO 7: Implement a method to get the value of a custom property
+Properties::Property* Properties::GetProperty(SString name) {
+    Property* p = NULL;
+    ListItem<Property*>* item = propertyList.start;
+
+    while (item != NULL) {
+        if (item->data->name == name) {
+            p = item->data;
+            break;
+        }
+        item = item->next;
+    }
+
+    return p;
 }
