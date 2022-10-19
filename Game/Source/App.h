@@ -50,11 +50,11 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// L03: TODO 1: Create methods to control that the real Load and Save happens at the end of the frame
+	// L03: DONE 1: Create methods to control that the real Load and Save happens at the end of the frame
 	void LoadGameRequest();
-	void SaveGameRequest();
-	bool LoadGame();
-	bool SaveGame();
+	void SaveGameRequest() ;
+	bool LoadFromFile();
+	bool SaveToFile() ;
 
 private:
 
@@ -95,12 +95,6 @@ private:
 	SString title;
 	SString organization;
 
-
-	mutable bool saveGameRequested;
-	bool loadGameRequested;
-
-	pugi::xml_document saveGame;
-
 	List<Module*> modules;
 
 	// L01: DONE 2: Create new variables from pugui namespace:
@@ -112,10 +106,9 @@ private:
 	uint frames;
 	float dt;
 
-	// L03: TODO 1: Create control variables to control that the real Load and Save happens at the end of the frame
-	mutable bool saveGameRequested;
+	// L03: DONE 1: Create control variables to control that the real Load and Save happens at the end of the frame
+    bool saveGameRequested;
 	bool loadGameRequested;
-    pugi::xml_document saveGame;
 };
 
 extern App* app;

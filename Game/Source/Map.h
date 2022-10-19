@@ -36,32 +36,46 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
-// L06: TODO 5: Create a generic structure to hold properties
+// L06: DONE 5: Create a generic structure to hold properties
 struct Properties
 {
-	struct Property {
+	struct Property
+	{
 		SString name;
-		SString type;
-		bool boolValue;
+		bool value;
 	};
 
-	List<Property*> propertyList;
+	~Properties()
+	{
+		//...
+		ListItem<Property*>* item;
+		item = list.start;
 
-	// L06: TODO 7: Method to ask for the value of a custom property
-	Property* GetProperty(SString name);
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
 
+		list.Clear();
+	}
+
+	// L06: DONE 7: Method to ask for the value of a custom property
+	Property* GetProperty(const char* name);
+
+	List<Property*> list;
 };
 
 // L05: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
 	SString	name;
-	int id;
+	int id; 
 	int width;
 	int height;
 	uint* data;
 
-	// L06: TODO7: Store custom properties
+	// L06: DONE: Store custom properties
 	Properties properties;
 
 	MapLayer() : data(NULL)
@@ -97,22 +111,22 @@ class Map : public Module
 {
 public:
 
-	Map();
+    Map();
 
-	// Destructor
-	virtual ~Map();
+    // Destructor
+    virtual ~Map();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node& conf);
+    // Called before render is available
+    bool Awake(pugi::xml_node& conf);
 
-	// Called each loop iteration
-	void Draw();
+    // Called each loop iteration
+    void Draw();
 
-	// Called before quitting
-	bool CleanUp();
+    // Called before quitting
+    bool CleanUp();
 
-	// Load new map
-	bool Load();
+    // Load new map
+    bool Load();
 
 	// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
@@ -128,22 +142,22 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
-	// L06: TODO 
+	// L06: DONE 2
 	TileSet* GetTilesetFromTileId(int gid) const;
 
-	// L06: TODO 6: Load a group of properties 
+	// L06: DONE 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
-public:
+public: 
 
 	// L04: DONE 1: Declare a variable data of the struct MapData
 	MapData mapData;
 
 private:
 
-	SString mapFileName;
+    SString mapFileName;
 	SString mapFolder;
-	bool mapLoaded;
+    bool mapLoaded;
 };
 
 #endif // __MAP_H__

@@ -159,10 +159,9 @@ void App::PrepareUpdate()
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// L03: TODO 1: This is a good place to call Load / Save methods
-	if (loadGameRequested == true) LoadGame();
-	if (saveGameRequested == true) SaveGame();
-
+	// L03: DONE 1: This is a good place to call Load / Save methods
+	if (loadGameRequested == true) LoadFromFile();
+	if (saveGameRequested == true) SaveToFile();
 }
 
 // Call modules before each loop iteration
@@ -273,32 +272,34 @@ const char* App::GetOrganization() const
 	return organization.GetString();
 }
 
-// L03: TODO 1: Implement methods to request load / save and methods 
+// L02: DONE 1: Implement methods to request load / save and methods 
 // for the real execution of load / save (to be implemented in TODO 5 and 7)
-void App::SaveGameRequest()
-{
-	saveGameRequested = true;
-}
-
 void App::LoadGameRequest()
 {
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
 	loadGameRequested = true;
 }
 
+// ---------------------------------------
+void App::SaveGameRequest() 
+{
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
+	saveGameRequested = true;
+}
 
 
-
-// L03: TODO 5: Implement the method LoadFromFile() to actually load a xml file
+// L02: DONE 5: Implement the method LoadFromFile() to actually load a xml file
 // then call all the modules to load themselves
-bool App::LoadGame()
+bool App::LoadFromFile()
 {
 	bool ret = true;
 
-	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
+		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
 		ret = false;
 	}
 	else
@@ -308,7 +309,7 @@ bool App::LoadGame()
 
 		while (item != NULL && ret == true)
 		{
-			ret = item->data->LoadState(saveGame.child("game_state").child(item->data->name.GetString()));
+			ret = item->data->LoadState(gameStateFile.child("save_state").child(item->data->name.GetString()));
 			item = item->next;
 		}
 	}
@@ -317,35 +318,26 @@ bool App::LoadGame()
 
 	return ret;
 }
-// L03: TODO 7: Implement the xml save method SaveToFile() for current state
+
+// L02: DONE 7: Implement the xml save method SaveToFile() for current state
 // check https://pugixml.org/docs/quickstart.html#modify
-bool App::SaveGame()
+bool App::SaveToFile() 
 {
-	bool ret = true;
+	bool ret = false;
+
+	pugi::xml_document* saveDoc = new pugi::xml_document();
+	pugi::xml_node saveStateNode = saveDoc->append_child("save_state");
 
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	pugi::xml_parse_result result = saveGame.load_file(SAVE_STATE_FILENAME);
-
-	if (result == NULL)
+	while (item != NULL)
 	{
-		LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
-		ret = false;
-	}
-	else
-	{
-		ListItem<Module*>* item;
-		item = modules.start;
-
-		while (item != NULL && ret == true)
-		{
-			ret = item->data->SaveState(saveGame.child("game_state").child(item->data->name.GetString()));
-			item = item->next;
-		}
+		ret = item->data->SaveState(saveStateNode.append_child(item->data->name.GetString()));
+		item = item->next;
 	}
 
-	saveGame.save_file(SAVE_STATE_FILENAME);
+	ret = saveDoc->save_file("save_game.xml");
 
 	saveGameRequested = false;
 

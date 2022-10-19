@@ -1,16 +1,12 @@
 <?xml version="1.0"?>
-<game_state>
+<save_state>
 	<input />
 	<window />
 	<textures />
 	<audio />
 	<scene />
+	<entitymanager />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="195" y="36" />
 	</renderer>
-	<entities>
-		<player>
-			<position x="7.67999983" y="22.385006" />
-		</player>
-	</entities>
-</game_state>
+</save_state>
