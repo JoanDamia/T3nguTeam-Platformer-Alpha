@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "Physics.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,6 +25,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
+	//L07 DONE 2: Add Physics module
+	physics = new Physics();
 	scene = new Scene();
 	entityManager = new EntityManager();
 	map = new Map();
@@ -34,6 +37,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	//L07 DONE 2: Add Physics module
+	AddModule(physics);
 	AddModule(scene);
 	AddModule(entityManager);
 	AddModule(map);
@@ -281,7 +286,7 @@ void App::LoadGameRequest()
 }
 
 // ---------------------------------------
-void App::SaveGameRequest() 
+void App::SaveGameRequest()
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
 	saveGameRequested = true;
@@ -321,7 +326,7 @@ bool App::LoadFromFile()
 
 // L02: DONE 7: Implement the xml save method SaveToFile() for current state
 // check https://pugixml.org/docs/quickstart.html#modify
-bool App::SaveToFile() 
+bool App::SaveToFile()
 {
 	bool ret = false;
 

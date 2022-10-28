@@ -18,6 +18,8 @@ class Audio;
 class Scene;
 class EntityManager;
 class Map;
+//L07 DONE 2: Add Physics module
+class Physics;
 
 class App
 {
@@ -52,9 +54,9 @@ public:
 
 	// L03: DONE 1: Create methods to control that the real Load and Save happens at the end of the frame
 	void LoadGameRequest();
-	void SaveGameRequest() ;
+	void SaveGameRequest();
 	bool LoadFromFile();
-	bool SaveToFile() ;
+	bool SaveToFile();
 
 private:
 
@@ -87,6 +89,8 @@ public:
 	Scene* scene;
 	EntityManager* entityManager;
 	Map* map;
+	//L07 DONE 2: Add Physics module
+	Physics* physics;
 
 private:
 
@@ -107,7 +111,7 @@ private:
 	float dt;
 
 	// L03: DONE 1: Create control variables to control that the real Load and Save happens at the end of the frame
-    bool saveGameRequested;
+	bool saveGameRequested;
 	bool loadGameRequested;
 };
 
