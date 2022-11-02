@@ -49,6 +49,18 @@ bool Player::Start() {
 	//initialize audio effect - !! Path is hardcoded, should be loaded from config.xml
 	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
+	floating = false; //Check if player is on the ground or not
+
+	return true;
+}
+
+// Called each loop iteration
+bool Player::PreUpdate()
+{
+	position.x = pbody->body->GetPosition().x;
+	position.y = pbody->body->GetPosition().y;
+
+
 	return true;
 }
 
@@ -56,6 +68,7 @@ bool Player::Update()
 {
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics
+	//atencio, s'ha comentat la segona línia després d'aquesta
 
 	int speed = 10;
 	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
@@ -68,10 +81,13 @@ bool Player::Update()
 		//
 	}
 
+	//Move left
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel = b2Vec2(-speed, -GRAVITY_Y);
 	}
 
+
+	//MoveRight
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel = b2Vec2(speed, -GRAVITY_Y);
 	}

@@ -19,6 +19,9 @@ public:
 
 	bool Start();
 
+
+	bool PreUpdate();
+
 	bool Update();
 
 	bool CleanUp();
@@ -37,6 +40,10 @@ private:
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
+
+	bool djump = true;
+	bool floating = true;
+	float jumping_force = 20.0f;
 
 	int pickCoinFxId;
 
