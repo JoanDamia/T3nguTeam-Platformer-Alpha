@@ -49,7 +49,7 @@ bool Player::Start() {
 	//initialize audio effect - !! Path is hardcoded, should be loaded from config.xml
 	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
-	floating = false; //Check if player is on the ground or not
+	inAir = false; //Check if player is on the ground or not
 
 	return true;
 }
@@ -74,12 +74,13 @@ bool Player::Update()
 	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
 
 	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
+	/*
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		//
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		//
-	}
+	}*/
 
 	//Move left
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
@@ -91,6 +92,23 @@ bool Player::Update()
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel = b2Vec2(speed, -GRAVITY_Y);
 	}
+
+	//Jump
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		if (!inAir)
+		{
+			pbody->body->SetLinearVelocity(b2Vec2(pbody->body->GetLinearVelocity().x, 0));
+			pbody->body->ApplyForceToCenter({ 0, -100 }, true);
+			//app->audio->PlayFx(jump_sound);
+			inAir = true;
+			djump = true;
+		}
+	}
+
+	/*if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
+		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+	}*/
 
 	//Set the velocity of the pbody of the player
 	pbody->body->SetLinearVelocity(vel);

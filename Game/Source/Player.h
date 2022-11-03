@@ -42,8 +42,8 @@ private:
 	PhysBody* pbody;
 
 	bool djump = true;
-	bool floating = true;
-	float jumping_force = 20.0f;
+	bool inAir = true;
+	float jumping_force = 15.0f;
 
 	int pickCoinFxId;
 
