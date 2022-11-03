@@ -192,6 +192,10 @@ bool Map::Load()
 
     // L07 DONE 3: Create colliders
     // Later you can create a function here to load and create the colliders from the map
+
+    // Els dos últims són les seves mesures! El primer és lo llarg que és i l'últim l'amplada!
+    // El primer són les x quan més gran més cap a la dreta, el segon són segurament les y. Quan més baixes siguin les y més cap adalt. 
+
     PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
     // L07 DONE 7: Assign collider type
     c1->ctype = ColliderType::PLATFORM;
@@ -204,7 +208,7 @@ bool Map::Load()
     // L07 DONE 7: Assign collider type
     c3->ctype = ColliderType::PLATFORM;
 
-    PhysBody* c4 = app->physics->CreateRectangle(207, 224 - 16, 414, 32, STATIC);
+    PhysBody* c4 = app->physics->CreateRectangle(300, 100, 400, 64, STATIC);
     // L07 DONE 7: Assign collider type
     c4->ctype = ColliderType::PLATFORM;
 
