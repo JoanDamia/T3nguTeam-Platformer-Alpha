@@ -30,7 +30,7 @@ public:
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&);
-
+	PhysBody* pbody;
 
 
 
@@ -44,7 +44,7 @@ private:
 	const char* texturePath;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
-	PhysBody* pbody;
+
 
 	bool djump = true;
 	bool inAir = true;
