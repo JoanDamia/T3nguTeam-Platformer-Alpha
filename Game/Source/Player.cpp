@@ -106,9 +106,9 @@ bool Player::Update()
 		}
 	}
 
-	/*if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
+	if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
-	}*/
+	}
 
 	//Set the velocity of the pbody of the player
 	pbody->body->SetLinearVelocity(vel);
