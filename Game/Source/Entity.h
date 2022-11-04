@@ -79,6 +79,8 @@ public:
 	EntityType type;
 	bool active = true;
 	pugi::xml_node parameters;
+	//b2Body* body;
+	
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...

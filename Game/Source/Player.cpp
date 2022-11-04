@@ -87,6 +87,11 @@ bool Player::Update()
 		vel = b2Vec2(-speed, -GRAVITY_Y);
 	}
 
+	/*if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		pbody->body->SetLinearVelocity({ -speed, pbody->body->GetLinearVelocity().y });
+
+	}*/
 
 	//MoveRight
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
@@ -148,4 +153,28 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 
 
+}
+
+bool Player::Load(pugi::xml_node& data)
+{
+
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
+	//position.x = data.child("player").child("position").attribute("x").as_int();
+	//position.y = data.child("player").child("position").attribute("y").as_int();
+
+	//body->SetTransform({ position.x + METERS_TO_PIXELS(w), position.y }, body->GetAngle());
+	//body->ApplyForceToCenter({ 0, 1 }, true);
+
+	return true;
+}
+
+bool Player::Save(pugi::xml_node& data)
+{
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
+	//data.child("player").child("position").attribute("x").set_value(position.x);
+	//data.child("player").child("position").attribute("y").set_value(position.y);
+
+	return true;
 }

@@ -204,13 +204,26 @@ bool Map::Load()
     // L07 DONE 7: Assign collider type
     c2->ctype = ColliderType::PLATFORM;
 
+
+    //plataforma inferior 1
     PhysBody* c3 = app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
     // L07 DONE 7: Assign collider type
     c3->ctype = ColliderType::PLATFORM;
 
-    PhysBody* c4 = app->physics->CreateRectangle(300, 100, 400, 64, STATIC);
+    //Plataforma inferior 2
+    PhysBody* c4 = app->physics->CreateRectangle(930, 704 + 32, 576, 64, STATIC);
     // L07 DONE 7: Assign collider type
     c4->ctype = ColliderType::PLATFORM;
+
+    //paretE
+    PhysBody* c5 = app->physics->CreateRectangle(25, 400, 75, 800, STATIC);
+    // L07 DONE 7: Assign collider type
+    c5->ctype = ColliderType::PLATFORM;
+
+    //paretD
+    PhysBody* c6 = app->physics->CreateRectangle(550, 30, 1000, 64, STATIC);
+    // L07 DONE 7: Assign collider type
+    c6->ctype = ColliderType::PLATFORM;
 
     if (ret == true)
     {

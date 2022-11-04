@@ -28,6 +28,11 @@ public:
 
 	// L07 DONE 6: Define OnCollision function for the player. Check the virtual function on Entity class
 	void OnCollision(PhysBody* physA, PhysBody* physB);
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&);
+
+
+
 
 
 public:
@@ -43,7 +48,8 @@ private:
 
 	bool djump = true;
 	bool inAir = true;
-	float jumping_force = 15.0f;
+	float jumpForce = 25.0f;
+	int w = 20, h = 32;
 
 	int pickCoinFxId;
 
