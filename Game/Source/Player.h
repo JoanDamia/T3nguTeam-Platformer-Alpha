@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Point.h"
+#include "Animation.h"
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
@@ -33,6 +34,16 @@ public:
 	PhysBody* pbody;
 
 
+	Animation idleRightAnim;
+	Animation idleLeftAnim;
+	Animation runRightAnim;
+	Animation runLeftAnim;
+	Animation jumpRightAnim;
+	Animation jumpLeftAnim;
+	Animation doubleJumpRightAnim;
+	Animation doubleJumpLeftAnim;
+	Animation fallRightAnim;
+	Animation fallLeftAnim;
 
 
 public:
@@ -42,6 +53,7 @@ private:
 	//L02: DONE 1: Declare player parameters
 	SDL_Texture* texture;
 	const char* texturePath;
+	Animation* currentAnim = nullptr;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 
