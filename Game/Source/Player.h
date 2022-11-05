@@ -34,16 +34,14 @@ public:
 	PhysBody* pbody;
 
 
-	Animation idleRightAnim;
-	Animation idleLeftAnim;
-	Animation runRightAnim;
-	Animation runLeftAnim;
-	Animation jumpRightAnim;
-	Animation jumpLeftAnim;
-	Animation doubleJumpRightAnim;
-	Animation doubleJumpLeftAnim;
-	Animation fallRightAnim;
-	Animation fallLeftAnim;
+	Animation idleRightAnimation;
+	Animation idleLeftAnimation;
+	Animation goRightAnimation;
+	Animation goLeftAnimation;
+	Animation jumpRightAnimation;
+	Animation jumpLeftAnimation;
+	Animation fallRightAnimation;
+	Animation fallLeftAnimation;
 
 
 public:
@@ -53,7 +51,9 @@ private:
 	//L02: DONE 1: Declare player parameters
 	SDL_Texture* texture;
 	const char* texturePath;
-	Animation* currentAnim = nullptr;
+
+	//Current animation
+	Animation* currentAnimation = nullptr;
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 

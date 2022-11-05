@@ -51,43 +51,39 @@ bool Player::Start() {
 
 	inAir = false; //Check if player is on the ground or not
 
-	currentAnim = &idleRightAnim;
+	currentAnimation = &idleRightAnimation;
 
-	idleRightAnim.loop = idleLeftAnim.loop = runRightAnim.loop = runLeftAnim.loop = true;
-	idleRightAnim.speed = idleLeftAnim.speed = 16.0f;
-	runRightAnim.speed = runLeftAnim.speed = 25.0f;
+	idleRightAnimation.loop = idleLeftAnimation.loop = goRightAnimation.loop = goLeftAnimation.loop = true;
+	idleRightAnimation.speed = idleLeftAnimation.speed = 16.0f;
+	goRightAnimation.speed = goLeftAnimation.speed = 25.0f;
 
 	for (int i = 0; i < 11; i++)
 	{
-		idleRightAnim.PushBack({ i * 32,0,22,26 });
+		idleRightAnimation.PushBack({ i * 32,0,22,26 });
 	}
 
 	for (int i = 0; i < 11; i++)
 	{
-		idleLeftAnim.PushBack({ i * 32,26,22,26 });
+		idleLeftAnimation.PushBack({ i * 32,26,22,26 });
 	}
 
 	for (int i = 0; i < 11; i++)
 	{
-		runRightAnim.PushBack({ i * 32,62,24,28 });
+	goRightAnimation.PushBack({ i * 32,62,24,28 });
 	}
 
 	for (int i = 0; i < 11; i++)
 	{
-		runLeftAnim.PushBack({ i * 32,90,24,28 });
+		goLeftAnimation.PushBack({ i * 32,90,24,28 });
 	}
 
-	jumpRightAnim.PushBack({ 0,188,22,28 });
+	jumpRightAnimation.PushBack({ 0,188,22,28 });
 
-	jumpLeftAnim.PushBack({ 68,188,22,28 });
+	jumpLeftAnimation.PushBack({ 68,188,22,28 });
 
-	doubleJumpLeftAnim.PushBack({ 68,188,22,28 });
+	fallRightAnimation.PushBack({ 22,188,23,28 });
 
-	doubleJumpRightAnim.PushBack({ 0,188,22,28 });
-
-	fallRightAnim.PushBack({ 22,188,23,28 });
-
-	fallLeftAnim.PushBack({ 45,188,23,28 });
+	fallLeftAnimation.PushBack({ 45,188,23,28 });
 
 	return true;
 }
@@ -123,6 +119,12 @@ bool Player::Update()
 	//Move left
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel = b2Vec2(-speed, -GRAVITY_Y);
+
+		if (currentAnimation != &goLeftAnimation && !inAir)
+		{
+			goLeftAnimation.Reset();
+			currentAnimation = &goLeftAnimation;
+		}
 	}
 
 	/*if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -134,6 +136,12 @@ bool Player::Update()
 	//MoveRight
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel = b2Vec2(speed, -GRAVITY_Y);
+
+		if (currentAnimation != &goRightAnimation && !inAir)
+		{
+			goRightAnimation.Reset();
+			currentAnimation = &goRightAnimation;
+		}
 	}
 
 	//Jump
@@ -146,6 +154,12 @@ bool Player::Update()
 			//app->audio->PlayFx(jump_sound);
 			inAir = true;
 			djump = true;
+		}
+
+		if (currentAnimation != &jumpRightAnimation && !inAir)
+		{
+			jumpRightAnimation.Reset();
+			currentAnimation = &jumpRightAnimation;
 		}
 	}
 
