@@ -1,26 +1,28 @@
-# {Project Name}
+# VRguy Adventures
 
 ## Description
 
-{project description}
+A game made buy a  not very talented student about a weird blue vr guy that jumps around and fights monsters.
 
 ## Key Features
 
- - {Feature01}
- - {Feature02}
- - {Feature03}
- - {Feature04}
+ - Cool assets
+ - Basic but fun movement
+ - Load And Save features, wow!
+ - More features, Coming Soon!
  
 ## Controls
 
- - {ControlsScheme}
+ - F6: Load
+ - F7: Save
+ - Space: jump
+ - A: Move left
+ - D: Move right
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
+ - Joan Damià https://github.com/JoanDamia
+
 
 ## License
 
