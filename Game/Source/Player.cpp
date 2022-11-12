@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Log.h"
 #include "Point.h"
+#include "Animation.h"
 #include "Physics.h"
 
 Player::Player() : Entity(EntityType::PLAYER)
@@ -116,6 +117,7 @@ bool Player::Update()
 		//
 	}*/
 
+	
 	//Move left
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel = b2Vec2(-speed, -GRAVITY_Y);
@@ -126,13 +128,14 @@ bool Player::Update()
 			currentAnimation = &goLeftAnimation;
 		}
 	}
-
+	
 	/*if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		pbody->body->SetLinearVelocity({ -speed, pbody->body->GetLinearVelocity().y });
 
 	}*/
 
+	
 	//MoveRight
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel = b2Vec2(speed, -GRAVITY_Y);
@@ -166,7 +169,7 @@ bool Player::Update()
 	if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
 	}
-
+	
 	//Set the velocity of the pbody of the player
 	pbody->body->SetLinearVelocity(vel);
 
