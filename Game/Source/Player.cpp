@@ -117,7 +117,7 @@ bool Player::Update()
 		//
 	}*/
 
-	
+	/*
 	//Move left
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		vel = b2Vec2(-speed, -GRAVITY_Y);
@@ -127,15 +127,41 @@ bool Player::Update()
 			goLeftAnimation.Reset();
 			currentAnimation = &goLeftAnimation;
 		}
-	}
-	
-	/*if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		pbody->body->SetLinearVelocity({ -speed, pbody->body->GetLinearVelocity().y });
-
 	}*/
 
+
+	//Move left
+
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+
+				pbody->body->SetLinearVelocity(b2Vec2(-speed, pbody->body->GetLinearVelocity().y));
+
+				position.x -= 10;
+
+			//lookLeft = true;
+
+				if (currentAnimation != &goLeftAnimation && !inAir)
+				{
+					goLeftAnimation.Reset();
+					currentAnimation = &goLeftAnimation;
+				}
+		}
+
+		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+		{
+
+			pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+
+			if (currentAnimation != &idleLeftAnimation && !inAir)
+			{
+				idleLeftAnimation.Reset();
+				currentAnimation = &idleLeftAnimation;
+			}
+		}
 	
+
+	/*
 	//MoveRight
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		vel = b2Vec2(speed, -GRAVITY_Y);
@@ -145,18 +171,46 @@ bool Player::Update()
 			goRightAnimation.Reset();
 			currentAnimation = &goRightAnimation;
 		}
-	}
+	}*/
 
-	//Jump
+	//Move right
+
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+	
+				pbody->body->SetLinearVelocity(b2Vec2(speed, pbody->body->GetLinearVelocity().y));
+				position.x += 10;
+
+			//lookLeft = false;
+
+			if (currentAnimation != &goRightAnimation && !inAir)
+			{
+				goRightAnimation.Reset();
+				currentAnimation = &goRightAnimation;
+			}
+		}
+
+		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+		{
+			pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+
+			if (currentAnimation != &idleRightAnimation && !inAir)
+			{
+				idleRightAnimation.Reset();
+				currentAnimation = &idleRightAnimation;
+			}
+		}
+
+	
+	//jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		if (!inAir)
 		{
-			pbody->body->SetLinearVelocity(b2Vec2(pbody->body->GetLinearVelocity().x, 0));
-			pbody->body->ApplyForceToCenter({ 0, -100 }, true);
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
+			pbody->body->ApplyForceToCenter({ 0, -jumpForce }, true);
 			//app->audio->PlayFx(jump_sound);
 			inAir = true;
-			djump = true;
 		}
 
 		if (currentAnimation != &jumpRightAnimation && !inAir)
@@ -166,12 +220,13 @@ bool Player::Update()
 		}
 	}
 
+
 	if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
 	}
 	
 	//Set the velocity of the pbody of the player
-	pbody->body->SetLinearVelocity(vel);
+	//pbody->body->SetLinearVelocity(vel);
 
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
@@ -215,11 +270,11 @@ bool Player::Load(pugi::xml_node& data)
 
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
-	//position.x = data.child("player").child("position").attribute("x").as_int();
-	//position.y = data.child("player").child("position").attribute("y").as_int();
+	position.x = data.child("player").child("position").attribute("x").as_int();
+	position.y = data.child("player").child("position").attribute("y").as_int();
 
-	//body->SetTransform({ position.x + METERS_TO_PIXELS(w), position.y }, body->GetAngle());
-	//body->ApplyForceToCenter({ 0, 1 }, true);
+	pbody->body->SetTransform({ position.x + METERS_TO_PIXELS(w), position.y }, pbody->body->GetAngle());
+	pbody->body->ApplyForceToCenter({ 0, 1 }, true);
 
 	return true;
 }
@@ -228,8 +283,8 @@ bool Player::Save(pugi::xml_node& data)
 {
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
-	//data.child("player").child("position").attribute("x").set_value(position.x);
-	//data.child("player").child("position").attribute("y").set_value(position.y);
+	data.child("player").child("position").attribute("x").set_value(position.x);
+	data.child("player").child("position").attribute("y").set_value(position.y);
 
 	return true;
 }

@@ -60,7 +60,7 @@ private:
 
 	bool djump = true;
 	bool inAir = true;
-	float jumpForce = 25.0f;
+	float jumpForce = 5000.0f;
 	int w = 20, h = 32;
 
 	int pickCoinFxId;

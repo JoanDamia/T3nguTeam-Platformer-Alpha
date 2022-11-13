@@ -27,30 +27,51 @@ bool Item::Awake() {
 
 bool Item::Start() {
 
+
+	
 	//initilize textures
-	texture = app->tex->Load(texturePath);
+	//texture = app->tex->Load(texturePath);
 
-	// L07 DONE 4: Add a physics to an item - initialize the physics body
-	pbody = app->physics->CreateCircle(position.x + 16, position.y + 16, 16, bodyType::DYNAMIC);
+	//// L07 DONE 4: Add a physics to an item - initialize the physics body
+	//pbody = app->physics->CreateCircle(position.x + 16, position.y + 16, 16, bodyType::DYNAMIC);
 
-	// L07 DONE 7: Assign collider type
-	pbody->ctype = ColliderType::ITEM;
-
+	//// L07 DONE 7: Assign collider type
+	//pbody->ctype = ColliderType::ITEM;
+	
 	return true;
 }
 
 bool Item::Update()
 {
 	// L07 DONE 4: Add a physics to an item - update the position of the object from the physics.  
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	app->render->DrawTexture(texture, position.x, position.y);
+	//
+	//position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
+	//position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
+	
+
+	//app->render->DrawTexture(texture, position.x, position.y);
 
 	return true;
 }
 
 bool Item::CleanUp()
 {
+	return true;
+}
+
+// Load & Save
+
+bool Item::Load(pugi::xml_node& data)
+{
+
+
+	return true;
+}
+
+bool Item::Save(pugi::xml_node& data)
+{
+
+
 	return true;
 }
