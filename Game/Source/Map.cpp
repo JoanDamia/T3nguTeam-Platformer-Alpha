@@ -495,6 +495,73 @@ Properties::Property* Properties::GetProperty(const char* name)
 }
 
 
+bool Map::IsWalkable(int x, int y) const
+{
+    bool isWalkable = false;
+    // L09: TODO 3: return true only if x and y are within map limits
+    // and the tile is walkable (tile id 0 in the navigation layer)
 
+    int gid = mapData.maplayers.start->next->data->Get(x, y);
+
+    if (x >= 0 && x < mapData.width && y >= 0 && y < mapData.height && gid != 26)
+    {
+        isWalkable = true;
+    }
+
+    return isWalkable;
+}
+
+void Map::PropagateBFS()
+{
+    // L09: TODO 1: If frontier queue contains elements
+    // pop the last one and calculate its 4 neighbors
+    iPoint currentFrontier;
+
+    bool isNotEmpty = frontier.Pop(currentFrontier);
+
+    if (isNotEmpty)
+    {
+        List<iPoint> neighborgs;
+
+        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
+            neighborgs.Add(iPoint(currentFrontier.x + 1, currentFrontier.y));
+        }
+
+        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
+            neighborgs.Add(iPoint(currentFrontier.x - 1, currentFrontier.y));
+        }
+
+        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
+            neighborgs.Add(iPoint(currentFrontier.x, currentFrontier.y + 1));
+        }
+
+        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
+            neighborgs.Add(iPoint(currentFrontier.x, currentFrontier.y - 1));
+        }
+
+
+        // L09 TODO 4: Check if we have reach a destination
+
+
+            // L09: TODO 2: For each neighbor, if not visited, add it
+            // to the frontier queue and visited list
+
+        ListItem<iPoint>* neighborg = neighborgs.start;
+
+        while (neighborg != NULL) {
+
+            int pos = visited.Find(neighborg->data);
+
+            if (pos == -1) {
+
+                frontier.Push(neighborg->data);
+                visited.Add(neighborg->data);
+            }
+
+            neighborg = neighborg->next;
+        }
+
+    }
+}
 
 

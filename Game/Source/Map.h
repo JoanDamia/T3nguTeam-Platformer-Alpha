@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "Queue.h"
+#include "DynArray.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -131,6 +133,12 @@ public:
 	// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
+	// L09: BFS Pathfinding methods
+	void ResetPath();
+	void DrawPath();
+	bool IsWalkable(int x, int y) const;
+	void PropagateBFS();
+
 private:
 
 	bool LoadMap(pugi::xml_node mapFile);
@@ -158,6 +166,11 @@ private:
 	SString mapFileName;
 	SString mapFolder;
 	bool mapLoaded;
+
+	// L09: BFS Pathfinding variables
+	Queue<iPoint> frontier;
+	List<iPoint> visited;
+
 };
 
 #endif // __MAP_H__
