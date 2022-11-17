@@ -28,7 +28,24 @@ bool Map::Awake(pugi::xml_node& config)
     mapFileName = config.child("mapfile").attribute("path").as_string();
     mapFolder = config.child("mapfolder").attribute("path").as_string();
 
+    //Initialize the path
+    frontier.Push(iPoint(19, 4), 0);
+    visited.Add(iPoint(19, 4));
+    breadcrumbs.Add(iPoint(19, 4));
+
+    // L09 DONE 4: Initialize destination point
+    destination = iPoint(0, 20);
+
     return ret;
+}
+
+void Map::PropagateDijkstra()
+{
+    // L10: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
+    // use the 2 dimensional array "costSoFar" to track the accumulated costs
+    // on each cell (is already reset to 0 automatically)
+
+
 }
 
 void Map::Draw()
@@ -83,6 +100,8 @@ void Map::Draw()
 
     }
 }
+
+
 
 // L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 iPoint Map::MapToWorld(int x, int y) const
@@ -498,13 +517,26 @@ Properties::Property* Properties::GetProperty(const char* name)
 bool Map::IsWalkable(int x, int y) const
 {
     bool isWalkable = false;
-    // L09: TODO 3: return true only if x and y are within map limits
+
+    // L09: DONE 3: return true only if x and y are within map limits
     // and the tile is walkable (tile id 0 in the navigation layer)
 
-    int gid = mapData.maplayers.start->next->data->Get(x, y);
+    ListItem<MapLayer*>* mapLayerItem;
+    mapLayerItem = mapData.maplayers.start;
+    MapLayer* navigationLayer = mapLayerItem->data;
 
-    if (x >= 0 && x < mapData.width && y >= 0 && y < mapData.height && gid != 26)
-    {
+    //Search the layer in the map that contains information for navigation
+    while (mapLayerItem != NULL) {
+
+        if (mapLayerItem->data->properties.GetProperty("Navigation") != NULL && mapLayerItem->data->properties.GetProperty("Navigation")->value) {
+            navigationLayer = mapLayerItem->data;
+        }
+
+        mapLayerItem = mapLayerItem->next;
+    }
+
+    //Set isWalkable to true if the position is inside map limits and is a position that is not blocked in the navigation layer
+    if (x >= 0 && y >= 0 && x < mapData.width && y < mapData.height && navigationLayer->Get(x, y) != 26) {
         isWalkable = true;
     }
 
@@ -513,55 +545,91 @@ bool Map::IsWalkable(int x, int y) const
 
 void Map::PropagateBFS()
 {
-    // L09: TODO 1: If frontier queue contains elements
+    // L09: DONE 1: If frontier queue contains elements
     // pop the last one and calculate its 4 neighbors
-    iPoint currentFrontier;
+    iPoint currentTile;
+    bool foundDestination = false;
 
-    bool isNotEmpty = frontier.Pop(currentFrontier);
+    // L09 DONE 4: Check if we have reach a destination
+    if (frontier.Count() > 0) {
+        iPoint frontierPoint = *(frontier.Peek(0));
+        if (frontierPoint == destination) {
+            foundDestination = true;
+            ComputePath(destination.x, destination.y);
+        }
+    }
 
-    if (isNotEmpty)
+    if (!foundDestination && frontier.Pop(currentTile))
     {
-        List<iPoint> neighborgs;
 
-        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
-            neighborgs.Add(iPoint(currentFrontier.x + 1, currentFrontier.y));
+        List<iPoint> neighbors;
+        if (IsWalkable(currentTile.x + 1, currentTile.y)) {
+            iPoint p;
+            neighbors.Add(p.Create(currentTile.x + 1, currentTile.y));
+        }
+        if (IsWalkable(currentTile.x, currentTile.y + 1)) {
+            iPoint p;
+            neighbors.Add(p.Create(currentTile.x, currentTile.y + 1));
+        }
+        if (IsWalkable(currentTile.x - 1, currentTile.y)) {
+            iPoint p;
+            neighbors.Add(p.Create(currentTile.x - 1, currentTile.y));
+        }
+        if (IsWalkable(currentTile.x, currentTile.y - 1)) {
+            iPoint p;
+            neighbors.Add(p.Create(currentTile.x, currentTile.y - 1));
         }
 
-        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
-            neighborgs.Add(iPoint(currentFrontier.x - 1, currentFrontier.y));
-        }
+        // L09: DONE 2: For each neighbor, if not visited, add it
+        // to the frontier queue and visited list
+        ListItem<iPoint>* item = neighbors.start;
 
-        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
-            neighborgs.Add(iPoint(currentFrontier.x, currentFrontier.y + 1));
-        }
+        while (item != NULL)
+        {
+            if (visited.Find(item->data) == -1)
+            {
+                frontier.Push(item->data, 0);
+                visited.Add(item->data);
 
-        if (IsWalkable(currentFrontier.x + 1, currentFrontier.y)) {
-            neighborgs.Add(iPoint(currentFrontier.x, currentFrontier.y - 1));
-        }
+                // L10: TODO 1: Record the direction to the previous node 
+                // with the new list "breadcrumps"
 
-
-        // L09 TODO 4: Check if we have reach a destination
-
-
-            // L09: TODO 2: For each neighbor, if not visited, add it
-            // to the frontier queue and visited list
-
-        ListItem<iPoint>* neighborg = neighborgs.start;
-
-        while (neighborg != NULL) {
-
-            int pos = visited.Find(neighborg->data);
-
-            if (pos == -1) {
-
-                frontier.Push(neighborg->data);
-                visited.Add(neighborg->data);
+                breadcrumbs.Add(currentTile);
             }
-
-            neighborg = neighborg->next;
+            item = item->next;
         }
 
     }
 }
+
+void Map::ComputePath(int x, int y)
+{
+    path.Clear();
+    iPoint goal = iPoint(x, y);
+
+    // L10: TODO 2: Follow the breadcrumps to goal back to the origin
+    // add each step into "path" dyn array (it will then draw automatically)
+
+    path.PushBack(goal);
+
+    while (visited.Find(goal) != -1 && goal != visited.start->data)
+    {
+        int index = visited.Find(goal);
+        iPoint nodeIcomeFrom = breadcrumbs[index];
+        path.PushBack(nodeIcomeFrom);
+        goal = nodeIcomeFrom;
+    }
+
+}
+
+void Map::PropagateDijkstra()
+{
+    // L10: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
+    // use the 2 dimensional array "costSoFar" to track the accumulated costs
+    // on each cell (is already reset to 0 automatically)
+
+
+}
+
 
 
