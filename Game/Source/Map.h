@@ -139,18 +139,27 @@ public:
 	// L08: DONE 3: Add method WorldToMap to obtain  
 	iPoint Map::WorldToMap(int x, int y);
 
-	// L09: BFS Pathfinding methods
-	void ResetPath();
-	void DrawPath();
-	bool IsWalkable(int x, int y) const;
+	// BFS/Dijkstra methods not required any more: Using PathFinding class
+/*
+// L09: BFS Pathfinding methods
+void ResetPath();
+void DrawPath();
+bool IsWalkable(int x, int y) const;
 
-	// L10: Methods for BFS + Pathfinding and cost function for Dijkstra
-	int MovementCost(int x, int y) const;
-	void ComputePath(int x, int y);
+// L10: Methods for BFS + Pathfinding and cost function for Dijkstra
+int MovementCost(int x, int y) const;
+void ComputePath(int x, int y);
 
-	// Propagation methods
-	void PropagateBFS();
-	void PropagateDijkstra();
+// Propagation methods
+void PropagateBFS(); //L09
+void PropagateDijkstra(); //L10
+void PropagateAStar(int heuristic); //L11
+*/
+
+// L12: Create walkability map for pathfinding
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+
 
 private:
 

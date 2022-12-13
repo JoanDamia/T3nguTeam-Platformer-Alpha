@@ -39,14 +39,68 @@ bool Map::Awake(pugi::xml_node& config)
     return ret;
 }
 
-void Map::PropagateDijkstra()
+// L12: Create walkability map for pathfinding
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+    bool ret = false;
+    ListItem<MapLayer*>* item;
+    item = mapData.maplayers.start;
+
+    for (item = mapData.maplayers.start; item != NULL; item = item->next)
+    {
+        MapLayer* layer = item->data;
+
+        if (layer->properties.GetProperty("Navigation") != NULL && !layer->properties.GetProperty("Navigation")->value)
+            continue;
+
+        uchar* map = new uchar[layer->width * layer->height];
+        memset(map, 1, layer->width * layer->height);
+
+        for (int y = 0; y < mapData.height; ++y)
+        {
+            for (int x = 0; x < mapData.width; ++x)
+            {
+                int i = (y * layer->width) + x;
+
+                int tileId = layer->Get(x, y);
+                TileSet* tileset = (tileId > 0) ? GetTilesetFromTileId(tileId) : NULL;
+
+                if (tileset != NULL)
+                {
+                    //According to the mapType use the ID of the tile to set the walkability value
+                    if (mapData.type == MapTypes::MAPTYPE_ISOMETRIC && tileId == 25) map[i] = 1;
+                    else if (mapData.type == MapTypes::MAPTYPE_ORTHOGONAL && tileId == 50) map[i] = 1;
+                    else map[i] = 0;
+                }
+                else {
+                    LOG("CreateWalkabilityMap: Invalid tileset found");
+                    map[i] = 0;
+                }
+            }
+        }
+
+        *buffer = map;
+        width = mapData.width;
+        height = mapData.height;
+        ret = true;
+
+        break;
+    }
+
+    return ret;
+}
+
+
+
+/*void Map::PropagateDijkstra()
 {
     // L10: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
     // use the 2 dimensional array "costSoFar" to track the accumulated costs
     // on each cell (is already reset to 0 automatically)
 
 
-}
+}*/
+
 
 void Map::Draw()
 {
@@ -514,7 +568,7 @@ Properties::Property* Properties::GetProperty(const char* name)
 }
 
 
-bool Map::IsWalkable(int x, int y) const
+/*bool Map::IsWalkable(int x, int y) const
 {
     bool isWalkable = false;
 
@@ -541,9 +595,9 @@ bool Map::IsWalkable(int x, int y) const
     }
 
     return isWalkable;
-}
+}*/
 
-void Map::PropagateBFS()
+/*void Map::PropagateBFS()
 {
     // L09: DONE 1: If frontier queue contains elements
     // pop the last one and calculate its 4 neighbors
@@ -600,9 +654,9 @@ void Map::PropagateBFS()
         }
 
     }
-}
+}*/
 
-void Map::ComputePath(int x, int y)
+/*void Map::ComputePath(int x, int y)
 {
     path.Clear();
     iPoint goal = iPoint(x, y);
@@ -620,16 +674,16 @@ void Map::ComputePath(int x, int y)
         goal = nodeIcomeFrom;
     }
 
-}
+}*/
 
-void Map::PropagateDijkstra()
+/*void Map::PropagateDijkstra()
 {
     // L10: TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
     // use the 2 dimensional array "costSoFar" to track the accumulated costs
     // on each cell (is already reset to 0 automatically)
 
 
-}
+}*/
 
 
 
