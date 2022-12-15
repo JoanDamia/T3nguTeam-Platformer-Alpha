@@ -38,9 +38,21 @@ public:
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
+	//SDL_Texture* title_screen;
+	//int current_lvl = 0;
+	//float x = 50, y = 500;
 
 private:
 	SDL_Texture* img;
+	SDL_Rect r;
+	Uint8 a;
+
+	//bool go_black = false;
+	//bool return_black = false;
+	//int fade_speed = 2;
+
+	//int destination_level = -1;
+	//pugi::xml_node node;
 
 };
 

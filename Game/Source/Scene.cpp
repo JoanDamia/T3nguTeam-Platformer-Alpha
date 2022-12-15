@@ -96,12 +96,10 @@ bool Scene::Update(float dt)
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
-	//Camera follows character
+	//Make the camera follow the player
 	uint x, y;
 	app->win->GetWindowSize(x, y);
 	app->render->camera.x = -app->scene->player->position.x + (x / 2);
-
-	//Camera off map adjustment
 	if (app->render->camera.x > 0) {
 		app->render->camera.x = 0;
 	}
@@ -123,8 +121,8 @@ bool Scene::PostUpdate()
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
-	//int c_x = -app->render->camera.x;
-	//r.x = c_x;
+	int c_x = -app->render->camera.x;
+	r.x = c_x;
 
 	return ret;
 }
