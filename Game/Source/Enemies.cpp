@@ -170,105 +170,13 @@
 //void Enemies::CreateGroundEnemy(float x, float y)
 //{
 //	Enemy* new_enemy = new Enemy();
-//
-//	// body
-//	b2BodyDef e_body;
-//	e_body.type = b2_dynamicBody;
-//	e_body.fixedRotation = true;
-//	e_body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-//
-//	new_enemy->body = app->physics->world->CreateBody(&e_body);
-//	new_enemy->body->SetFixedRotation(true);
-//
-//	b2PolygonShape box;
-//	box.SetAsBox(PIXEL_TO_METERS(new_enemy->w), PIXEL_TO_METERS(new_enemy->h));
-//
-//	b2FixtureDef fixture;
-//	fixture.shape = &box;
-//	fixture.density = 1.0f;
-//	fixture.friction = 0.0f;
-//	b2Fixture* bodyFixture = new_enemy->body->CreateFixture(&fixture);
-//	bodyFixture->SetSensor(false);
-//	bodyFixture->SetUserData((void*)4);
-//
-//	// ground sensor
-//	box.SetAsBox(PIXEL_TO_METERS((new_enemy->w)), PIXEL_TO_METERS(4), b2Vec2(0, PIXEL_TO_METERS(-20)), 0);
-//	fixture.isSensor = true;
-//	b2Fixture* sensorFixture = new_enemy->body->CreateFixture(&fixture);
-//	sensorFixture->SetUserData((void*)9); // hit sensor
-//
-//	// stats
-//	new_enemy->origin_x = PIXEL_TO_METERS(x);
-//	new_enemy->origin_y = PIXEL_TO_METERS(y);
-//	new_enemy->x = PIXEL_TO_METERS(x);
-//	new_enemy->y = PIXEL_TO_METERS(y);
-//	new_enemy->speed = 0.05f;
-//
-//	new_enemy->type = ENEMY_TYPE::GROUND;
-//
-//	new_enemy->currentAnimation = &goPigRightAnimation;
-//
-//	new_enemy->lookLeft = true;
-//
-//	new_enemy->detectionRange = 5.0f;
-//	new_enemy->enemy_spoted = false;
-//
-//	new_enemy->state = ENEMY_STATE::IDLE;
-//	new_enemy->obLeft = false;
-//
-//	enemies.Insert(*new_enemy, enemies.Count());
+
 //}
 //
 //void Enemies::CreateAirEnemy(float x, float y)
 //{
 //	Enemy* new_enemy = new Enemy();
-//
-//	// body
-//	b2BodyDef e_body;
-//	e_body.type = b2_dynamicBody;
-//	e_body.fixedRotation = true;
-//	e_body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
-//	e_body.gravityScale = 0.0f;
-//
-//	new_enemy->body = app->physics->world->CreateBody(&e_body);
-//	new_enemy->body->SetFixedRotation(true);
-//
-//	b2PolygonShape box;
-//	box.SetAsBox(PIXEL_TO_METERS(new_enemy->w), PIXEL_TO_METERS(new_enemy->h));
-//
-//	b2FixtureDef fixture;
-//	fixture.shape = &box;
-//	fixture.density = 1.0f;
-//	fixture.friction = 0.0f;
-//	b2Fixture* bodyFixture = new_enemy->body->CreateFixture(&fixture);
-//	bodyFixture->SetSensor(false);
-//	bodyFixture->SetUserData((void*)4); // player collision
-//
-//	// ground sensor
-//	box.SetAsBox(PIXEL_TO_METERS((new_enemy->w)), PIXEL_TO_METERS(4), b2Vec2(0, PIXEL_TO_METERS(-20)), 0);
-//	fixture.isSensor = true;
-//	b2Fixture* sensorFixture = new_enemy->body->CreateFixture(&fixture);
-//	sensorFixture->SetUserData((void*)9); // ground sensor
-//
-//	// stats
-//	new_enemy->origin_x = PIXEL_TO_METERS(x);
-//	new_enemy->origin_y = PIXEL_TO_METERS(y);
-//	new_enemy->x = PIXEL_TO_METERS(x);
-//	new_enemy->y = PIXEL_TO_METERS(y);
-//	new_enemy->speed = 0.05f;
-//
-//	new_enemy->type = ENEMY_TYPE::AIR;
-//
-//	new_enemy->currentAnimation = &idleBatRightAnimation;
-//
-//	new_enemy->lookLeft = true;
-//
-//	new_enemy->detectionRange = 5.0f;
-//	new_enemy->enemy_spoted = false;
-//
-//	new_enemy->state = ENEMY_STATE::IDLE;
-//
-//	enemies.Insert(*new_enemy, enemies.Count());
+
 //}
 //
 //
