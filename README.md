@@ -9,7 +9,11 @@ A game made buy a  not very talented student about a weird blue vr guy that jump
  - Cool assets
  - Basic but fun movement
  - Load And Save features, wow!
- - More features, Coming Soon!
+ - Improved map
+ - Camera follows player
+ - Not achieved yet, but enemy module made
+ - Pathfinder ready
+ - Colisions 
  
 ## Controls
 
