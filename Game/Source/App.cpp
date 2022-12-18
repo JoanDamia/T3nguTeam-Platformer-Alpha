@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Pathfinding.h"
+#include "Enemies.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -32,6 +33,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	entityManager = new EntityManager();
 	map = new Map();
 	pathfinding = new PathFinding();
+	//enemies = new Enemies();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

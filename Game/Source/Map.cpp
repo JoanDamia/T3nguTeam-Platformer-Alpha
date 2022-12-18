@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Physics.h"
+#include "Enemies.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -405,8 +406,71 @@ bool Map::Load()
 
     //Platform14
 
-    PhysBody* c24 = app->physics->CreateRectangle(336 + 1315, 687, 130 - 45, 32, STATIC);
+    PhysBody* c24 = app->physics->CreateRectangle(336 + 1305, 687, 130 - 47, 32, STATIC);
     c24->ctype = ColliderType::PLATFORM;
+
+    //Platform15
+
+    PhysBody* c25 = app->physics->CreateRectangle(336 + 1371, 687-33, 130 - 47, 32, STATIC);
+    c25->ctype = ColliderType::PLATFORM;
+
+    //Platform16
+
+    PhysBody* c26 = app->physics->CreateRectangle(336 + 1400, 687 - 63, 130 - 47, 32, STATIC);
+    c26->ctype = ColliderType::PLATFORM;
+
+    //Platform17 // one block measure
+
+    PhysBody* c27 = app->physics->CreateRectangle(336 + 1440, 687 - 94, 130 - 100, 32, STATIC);
+    c27->ctype = ColliderType::PLATFORM;
+
+    //BrickPlatform1
+
+    PhysBody* c28 = app->physics->CreateRectangle(336 + 625, 687 - 62, 130, 32, STATIC);
+    c28->ctype = ColliderType::PLATFORM;
+
+    //LittleLadder
+
+    PhysBody* c29 = app->physics->CreateRectangle(336 + 290, 687 - 33, 30, 32, STATIC);
+    c29->ctype = ColliderType::PLATFORM;
+
+    //LittleLadder2
+
+    PhysBody* c30 = app->physics->CreateRectangle(336 + 433, 687 - 33, 63, 32, STATIC);
+    c30->ctype = ColliderType::PLATFORM;
+
+
+    //LittleLadder3
+
+    PhysBody* c31 = app->physics->CreateRectangle(336 + 464, 687 - 63, 63, 32, STATIC);
+    c31->ctype = ColliderType::PLATFORM;
+
+    //LittleLadder4
+
+    PhysBody* c32 = app->physics->CreateRectangle(336 + 496, 687 - 96, 63, 32, STATIC);
+    c32->ctype = ColliderType::PLATFORM;
+
+
+    //Metal Blocc
+
+    PhysBody* c33 = app->physics->CreateRectangle(336 + 818, 687 - 55, 63, 48, STATIC);
+    c33->ctype = ColliderType::PLATFORM;
+
+
+    //Metal Blocc2
+
+    PhysBody* c34 = app->physics->CreateRectangle(336 + 975, 687 - 120, 63, 48, STATIC);
+    c34->ctype = ColliderType::PLATFORM;
+
+    //Gold Blocc
+
+    PhysBody* c35 = app->physics->CreateRectangle(336 + 1113, 687 - 185, 53, 48, STATIC);
+    c35->ctype = ColliderType::PLATFORM;
+
+    //Gold Blocc2
+
+    PhysBody* c36 = app->physics->CreateRectangle(336 + 1210, 687 - 215, 53, 48, STATIC);
+    c36->ctype = ColliderType::PLATFORM;
 
     if (ret == true)
     {

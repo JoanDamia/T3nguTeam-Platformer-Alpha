@@ -203,7 +203,7 @@ bool Player::Update()
 
 	
 	//jump
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
 		if (!inAir)
 		{
@@ -217,6 +217,17 @@ bool Player::Update()
 		{
 			jumpRightAnimation.Reset();
 			currentAnimation = &jumpRightAnimation;
+		}
+	}
+
+	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	{
+		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+
+		if (currentAnimation != &idleRightAnimation && !inAir)
+		{
+			idleRightAnimation.Reset();
+			currentAnimation = &idleRightAnimation;
 		}
 	}
 
