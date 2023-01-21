@@ -78,7 +78,7 @@ bool Player::Start() {
 		goLeftAnimation.PushBack({ i * 32,90,24,28 });
 	}
 
-	jumpRightAnimation.PushBack({ 0,188,22,28 });
+	SDL_Rect rect.PushBack({ 0,188,22,28 }) = jumpRightAnimation;
 
 	jumpLeftAnimation.PushBack({ 68,188,22,28 });
 
