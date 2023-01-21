@@ -55,17 +55,17 @@ bool Player::Start() {
 	currentAnimation = &idleRightAnimation;
 
 	idleRightAnimation.loop = idleLeftAnimation.loop = goRightAnimation.loop = goLeftAnimation.loop = true;
-	idleRightAnimation.speed = idleLeftAnimation.speed = 16.0f;
-	goRightAnimation.speed = goLeftAnimation.speed = 25.0f;
+	idleRightAnimation.speed = idleLeftAnimation.speed = 0.5f;
+	goRightAnimation.speed = goLeftAnimation.speed = 0.5f;
 
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < 11; i++)//for porque vamos metiendo sprites (es un array) y le cambiamos el valor de x en cada iteración. Hasta llegar al sprite que queremos
 	{
-		idleRightAnimation.PushBack({ i * 32,0,22,26 });
+		idleRightAnimation.PushBack({ i * 32,0,24,26 });
 	}
 
 	for (int i = 0; i < 11; i++)
 	{
-		idleLeftAnimation.PushBack({ i * 32,26,22,26 });
+		idleLeftAnimation.PushBack({ i * 32,26,24,26 });
 	}
 
 	for (int i = 0; i < 11; i++)
@@ -78,13 +78,23 @@ bool Player::Start() {
 		goLeftAnimation.PushBack({ i * 32,90,24,28 });
 	}
 
-	SDL_Rect rect.PushBack({ 0,188,22,28 }) = jumpRightAnimation;
+	for (int i = 0; i < 2; i++)
+	{
+		jumpRightAnimation.PushBack({ i * 23,189,24,28 });
+	}	
+	for (int i = 0; i < 2; i++)
+	{
+		jumpLeftAnimation.PushBack({ i * 68,188,22,28 });
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		fallRightAnimation.PushBack({ i * 22,188,23,28 });
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		fallLeftAnimation.PushBack({ i * 45,188,23,28 });
+	}
 
-	jumpLeftAnimation.PushBack({ 68,188,22,28 });
-
-	fallRightAnimation.PushBack({ 22,188,23,28 });
-
-	fallLeftAnimation.PushBack({ 45,188,23,28 });
 
 	return true;
 }
@@ -101,6 +111,8 @@ bool Player::PreUpdate()
 
 bool Player::Update()
 {
+
+	//current animation indica la animacion actual y no va a cambiar hasta que se otra animacion diferente
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	//atencio, s'ha comentat la segona línia després d'aquesta
@@ -132,34 +144,34 @@ bool Player::Update()
 
 	//Move left
 
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+
+		pbody->body->SetLinearVelocity(b2Vec2(-speed, pbody->body->GetLinearVelocity().y));
+
+		position.x -= 10;
+
+		//lookLeft = true;
+
+		if (currentAnimation != &goLeftAnimation && !inAir)
 		{
-
-				pbody->body->SetLinearVelocity(b2Vec2(-speed, pbody->body->GetLinearVelocity().y));
-
-				position.x -= 10;
-
-			//lookLeft = true;
-
-				if (currentAnimation != &goLeftAnimation && !inAir)
-				{
-					goLeftAnimation.Reset();
-					currentAnimation = &goLeftAnimation;
-				}
+			goLeftAnimation.Reset();
+			currentAnimation = &goLeftAnimation;
 		}
+	}
 
-		else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+	{
+
+		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+
+		if (currentAnimation != &idleLeftAnimation && !inAir)
 		{
-
-			pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
-
-			if (currentAnimation != &idleLeftAnimation && !inAir)
-			{
-				idleLeftAnimation.Reset();
-				currentAnimation = &idleLeftAnimation;
-			}
+			idleLeftAnimation.Reset();
+			currentAnimation = &idleLeftAnimation;
 		}
-	
+	}
+
 
 	/*
 	//MoveRight
@@ -175,33 +187,33 @@ bool Player::Update()
 
 	//Move right
 
-		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+
+		pbody->body->SetLinearVelocity(b2Vec2(speed, pbody->body->GetLinearVelocity().y));
+		position.x += 10;
+
+		//lookLeft = false;
+
+		if (currentAnimation != &goRightAnimation && !inAir)
 		{
-	
-				pbody->body->SetLinearVelocity(b2Vec2(speed, pbody->body->GetLinearVelocity().y));
-				position.x += 10;
-
-			//lookLeft = false;
-
-			if (currentAnimation != &goRightAnimation && !inAir)
-			{
-				goRightAnimation.Reset();
-				currentAnimation = &goRightAnimation;
-			}
+			goRightAnimation.Reset();
+			currentAnimation = &goRightAnimation;
 		}
+	}
 
-		else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	{
+		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+
+		if (currentAnimation != &idleRightAnimation && !inAir)
 		{
-			pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
-
-			if (currentAnimation != &idleRightAnimation && !inAir)
-			{
-				idleRightAnimation.Reset();
-				currentAnimation = &idleRightAnimation;
-			}
+			idleRightAnimation.Reset();
+			currentAnimation = &idleRightAnimation;
 		}
+	}
 
-	
+
 	//jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
@@ -235,7 +247,7 @@ bool Player::Update()
 	if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
 	}
-	
+
 	//Set the velocity of the pbody of the player
 	//pbody->body->SetLinearVelocity(vel);
 
@@ -243,7 +255,10 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
 
-	app->render->DrawTexture(texture, position.x, position.y);
+	SDL_Rect currentSprite = currentAnimation->GetCurrentFrame(); //dona el fram actual de l'animación actual. Después se debe actualizar al siguiente frame
+	app->render->DrawTexture(texture, position.x, position.y, &currentSprite); //añadimos el current sprite para decirle que dibuje x rectangulo, current sprite lo pasamos en referencia.
+	currentAnimation->Update();//pasar al render
+
 
 	return true;
 }
