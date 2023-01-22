@@ -10,11 +10,11 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "MapStage2.tmx": {
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 733.3333333333333,
-                "y": 177.27272727272737
+                "x": 638,
+                "y": 165
             }
         },
         "MapStage2.tmx#MapMetadata": {
@@ -41,8 +41,8 @@
             "scale": 0.173486328125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1014.4891640866873,
-                "y": 380.43343653250764
+                "x": 1026.017450042218,
+                "y": -409.2541514213341
             }
         },
         "MapTemplate.tmx#Background2": {

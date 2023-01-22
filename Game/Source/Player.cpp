@@ -10,6 +10,8 @@
 #include "Animation.h"
 #include "Physics.h"
 
+#include "iostream"
+
 Player::Player() : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
@@ -55,8 +57,8 @@ bool Player::Start() {
 	currentAnimation = &idleRightAnimation;
 
 	idleRightAnimation.loop = idleLeftAnimation.loop = goRightAnimation.loop = goLeftAnimation.loop = true;
-	idleRightAnimation.speed = idleLeftAnimation.speed = 0.5f;
-	goRightAnimation.speed = goLeftAnimation.speed = 0.5f;
+	idleRightAnimation.speed = idleLeftAnimation.speed = 15.0f;
+	goRightAnimation.speed = goLeftAnimation.speed = 15.0f;
 
 	for (int i = 0; i < 11; i++)//for porque vamos metiendo sprites (es un array) y le cambiamos el valor de x en cada iteración. Hasta llegar al sprite que queremos
 	{
@@ -95,6 +97,7 @@ bool Player::Start() {
 		fallLeftAnimation.PushBack({ i * 45,188,23,28 });
 	}
 
+	oposPlayer = position;
 
 	return true;
 }
@@ -109,37 +112,29 @@ bool Player::PreUpdate()
 	return true;
 }
 
+Uint64 NOW = SDL_GetPerformanceCounter(); //tiempo de la primera ejecución sin el update
+
+bool velNeg = false;
+bool doubleJump = true;
+bool spacePressed = false;
+
 bool Player::Update()
 {
+
+	Hurt();
+	Uint64 LAST = NOW; //cuando hacemos el update, en que tiempo estamos ahora (tic).
+	NOW = SDL_GetPerformanceCounter();
+
+	double deltaTime = ((NOW - LAST) / (double)SDL_GetPerformanceFrequency()); //Ene ste caso tenemos el último y el actual con la resta
 
 	//current animation indica la animacion actual y no va a cambiar hasta que se otra animacion diferente
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	//atencio, s'ha comentat la segona línia després d'aquesta
 
-	int speed = 5;
+	int speed = 500 * deltaTime;
 	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
-
-	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
-	/*
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		//
-	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
-	}*/
-
-	/*
-	//Move left
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed, -GRAVITY_Y);
-
-		if (currentAnimation != &goLeftAnimation && !inAir)
-		{
-			goLeftAnimation.Reset();
-			currentAnimation = &goLeftAnimation;
-		}
-	}*/
+	
 
 
 	//Move left
@@ -173,17 +168,6 @@ bool Player::Update()
 	}
 
 
-	/*
-	//MoveRight
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed, -GRAVITY_Y);
-
-		if (currentAnimation != &goRightAnimation && !inAir)
-		{
-			goRightAnimation.Reset();
-			currentAnimation = &goRightAnimation;
-		}
-	}*/
 
 	//Move right
 
@@ -204,7 +188,7 @@ bool Player::Update()
 
 	else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 	{
-		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
+		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y)); //si y esta a 0 significa que esta al suelo
 
 		if (currentAnimation != &idleRightAnimation && !inAir)
 		{
@@ -213,6 +197,15 @@ bool Player::Update()
 		}
 	}
 
+	//el valor de velNeg depende antes de la comparación que cuando comprobamos que es negativo en ell mismo frame. 
+
+	if (inAir && !velNeg && pbody->body->GetLinearVelocity().y == 0.0f) {
+		inAir = false;
+		doubleJump = true;
+		//se ejecuta antes del jump porque al pulsar espacio, no se ha aplicado la fuerza/actualizado la velocidad, por lo tanto es 0 y hay que esperar al siguiente frame. 
+	}
+
+	velNeg = pbody->body->GetLinearVelocity().y < 0.0f; //comprobamos si la velocidad es negativa para evitar que cuando el jugador se pare al chocar contra un muro superior continuie saltando continuamente mientras tengamos pulsado el espacio
 
 	//jump
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
@@ -220,11 +213,20 @@ bool Player::Update()
 		if (!inAir)
 		{
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-			pbody->body->ApplyForceToCenter({ 0, -jumpForce }, true);
+			pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
 			//app->audio->PlayFx(jump_sound);
+	
+
 			inAir = true;
 		}
 
+		else if (doubleJump) {
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
+			pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32)deltaTime }, true); 
+			//app->audio->PlayFx(jump_sound);
+			doubleJump = false;
+		}
+	
 		if (currentAnimation != &jumpRightAnimation && !inAir)
 		{
 			jumpRightAnimation.Reset();
@@ -243,6 +245,7 @@ bool Player::Update()
 		}
 	}
 
+	
 
 	if (pbody->body->GetLinearVelocity().x > -0.5f && pbody->body->GetLinearVelocity().x < 0.5f) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
@@ -257,7 +260,7 @@ bool Player::Update()
 
 	SDL_Rect currentSprite = currentAnimation->GetCurrentFrame(); //dona el fram actual de l'animación actual. Después se debe actualizar al siguiente frame
 	app->render->DrawTexture(texture, position.x, position.y, &currentSprite); //añadimos el current sprite para decirle que dibuje x rectangulo, current sprite lo pasamos en referencia.
-	currentAnimation->Update();//pasar al render
+	currentAnimation->Update(deltaTime);//pasar al render
 	
 
 	return true;
@@ -289,6 +292,20 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 
 
+}
+
+void Player::Hurt() {
+
+	if (healthPoints == 0) {
+
+
+	}
+
+	if (position.y > 800) {
+		position = oposPlayer;
+	}
+
+	std::cout << position.y << std::endl;
 }
 
 bool Player::Load(pugi::xml_node& data)
