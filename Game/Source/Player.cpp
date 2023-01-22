@@ -258,7 +258,7 @@ bool Player::Update()
 	SDL_Rect currentSprite = currentAnimation->GetCurrentFrame(); //dona el fram actual de l'animación actual. Después se debe actualizar al siguiente frame
 	app->render->DrawTexture(texture, position.x, position.y, &currentSprite); //añadimos el current sprite para decirle que dibuje x rectangulo, current sprite lo pasamos en referencia.
 	currentAnimation->Update();//pasar al render
-
+	
 
 	return true;
 }
