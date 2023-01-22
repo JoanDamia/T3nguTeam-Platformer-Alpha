@@ -72,6 +72,11 @@ public:
 
 	}
 
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
+	}
+
 public:
 
 	SString name;

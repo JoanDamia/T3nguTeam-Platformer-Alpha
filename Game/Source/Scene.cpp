@@ -79,7 +79,8 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-
+	// L14: DONE 4: Make the camera movement independent of framerate
+	float speed = 0.2 * dt;
 	/*
 	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += 1;
