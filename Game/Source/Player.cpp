@@ -97,7 +97,10 @@ bool Player::Start() {
 		fallLeftAnimation.PushBack({ i * 45,188,23,28 });
 	}
 
-	oposPlayer = position;
+	//oposPlayer = position;
+
+	oposPlayer.x = pbody->body->GetPosition().x;
+	oposPlayer.y = pbody->body->GetPosition().y;
 
 	return true;
 }
@@ -302,6 +305,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
 		break;
+	case ColliderType::CHECKPOINT:
+		LOG("Collision CHECKPOINT");
+		lastCheckpoint = pbody->body->GetPosition();
+			break;
+
 	}
 
 
@@ -318,6 +326,7 @@ void Player::Hurt() {
 	if (position.y > 800) {
 		position = oposPlayer;
 		pbody->body->SetTransform(b2Vec2(position.x, position.y), pbody->body->GetAngle());
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 	}
 
 	std::cout << position.y << std::endl;

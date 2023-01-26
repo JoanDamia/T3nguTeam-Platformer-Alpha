@@ -65,7 +65,10 @@ private:
 	bool inAir = true;
 	float jumpForce = 20000.0f;
 	int w = 20, h = 32;
-	fPoint oposPlayer;
+	b2Vec2
+		oposPlayer,
+		lastCheckpoint;
+
 
 	int pickCoinFxId;
 
