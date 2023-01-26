@@ -1,3 +1,4 @@
+/*
 #ifndef __GUIMANAGER_H__
 #define __GUIMANAGER_H__
 
@@ -42,3 +43,4 @@ public:
 };
 
 #endif // __GUIMANAGER_H__
+*/

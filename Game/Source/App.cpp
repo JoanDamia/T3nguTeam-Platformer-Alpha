@@ -10,7 +10,7 @@
 #include "Physics.h"
 #include "Pathfinding.h"
 #include "Enemies.h"
-#include "GuiManager.h"
+//#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -47,7 +47,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(entityManager);
 	AddModule(map);
-	AddModule(guiManager);
+	//AddModule(guiManager);
 
 	// Render last to swap buffer
 	AddModule(render);

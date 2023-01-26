@@ -1,3 +1,4 @@
+
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
@@ -72,10 +73,10 @@ public:
 
 	}
 
-	virtual bool OnGuiMouseClickEvent(GuiControl* control)
-	{
-		return true;
-	}
+	//virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	//{
+	//	return true;
+	//}
 
 public:
 

@@ -1,3 +1,4 @@
+/*
 #include "GuiManager.h"
 #include "App.h"
 #include "Textures.h"
@@ -51,8 +52,9 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 		default:
 			break;
 			*/
+/*
 	}
-
+	
 	//Set the observer
 	guiControl->SetObserver(observer);
 
@@ -112,6 +114,6 @@ bool GuiManager::CleanUp()
 
 	return false;
 }
-
+*/
 
 

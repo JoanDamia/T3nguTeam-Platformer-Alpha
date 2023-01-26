@@ -24,7 +24,7 @@ class Map;
 class Physics;
 class PathFinding;
 class Enemies;
-class GuiManager;
+//class GuiManager;
 
 class App
 {
@@ -98,7 +98,7 @@ public:
 	Physics* physics;
 	PathFinding* pathfinding;
 	Enemies* enemies;
-	GuiManager* guiManager;
+	//GuiManager* guiManager;
 
 private:
 

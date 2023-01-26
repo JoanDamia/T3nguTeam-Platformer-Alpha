@@ -115,7 +115,8 @@ bool Player::PreUpdate()
 Uint64 NOW = SDL_GetPerformanceCounter(); //tiempo de la primera ejecución sin el update
 
 bool velNeg = false;
-bool doubleJump = true;
+//bool doubleJump = true; 
+Uint8 jumps = 2;
 bool spacePressed = false;
 
 bool Player::Update()
@@ -201,37 +202,50 @@ bool Player::Update()
 
 	if (inAir && !velNeg && pbody->body->GetLinearVelocity().y == 0.0f) {
 		inAir = false;
-		doubleJump = true;
+		jumps = 2;
 		//se ejecuta antes del jump porque al pulsar espacio, no se ha aplicado la fuerza/actualizado la velocidad, por lo tanto es 0 y hay que esperar al siguiente frame. 
 	}
 
 	velNeg = pbody->body->GetLinearVelocity().y < 0.0f; //comprobamos si la velocidad es negativa para evitar que cuando el jugador se pare al chocar contra un muro superior continuie saltando continuamente mientras tengamos pulsado el espacio
 
 	//jump
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-	{
-		if (!inAir)
-		{
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-			pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
-			//app->audio->PlayFx(jump_sound);
-	
+	//if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	//{
+	//	if (!inAir)
+	//	{
+	//		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
+	//		pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
+	//		//app->audio->PlayFx(jump_sound);
+	//
 
+	//		inAir = true;
+	//	}
+
+	//	else if (doubleJump) {
+	//		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
+	//		pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32)deltaTime }, true); 
+	//		//app->audio->PlayFx(jump_sound);
+	//		doubleJump = false;
+	//	}
+	//
+	//	if (currentAnimation != &jumpRightAnimation && !inAir)
+	//	{
+	//		jumpRightAnimation.Reset();
+	//		currentAnimation = &jumpRightAnimation;
+	//	}
+	//}
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+		if (jumps != 0) {
+			jumps--;
+			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
+		    pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
+			//app->audio->PlayFx(jump_sound);
 			inAir = true;
-		}
-
-		else if (doubleJump) {
-			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-			pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32)deltaTime }, true); 
-			//app->audio->PlayFx(jump_sound);
-			doubleJump = false;
-		}
-	
-		if (currentAnimation != &jumpRightAnimation && !inAir)
-		{
 			jumpRightAnimation.Reset();
 			currentAnimation = &jumpRightAnimation;
 		}
+
 	}
 
 	else if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
@@ -303,6 +317,7 @@ void Player::Hurt() {
 
 	if (position.y > 800) {
 		position = oposPlayer;
+		pbody->body->SetTransform(b2Vec2(position.x, position.y), pbody->body->GetAngle());
 	}
 
 	std::cout << position.y << std::endl;
