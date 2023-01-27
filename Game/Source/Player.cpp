@@ -99,8 +99,8 @@ bool Player::Start() {
 
 	//oposPlayer = position;
 
-	oposPlayer.x = pbody->body->GetPosition().x;
-	oposPlayer.y = pbody->body->GetPosition().y;
+	oposPlayer = pbody->body->GetPosition();
+	
 
 	return true;
 }
@@ -206,6 +206,7 @@ bool Player::Update()
 	if (inAir && !velNeg && pbody->body->GetLinearVelocity().y == 0.0f) {
 		inAir = false;
 		jumps = 2;
+		pbody->body->SetLinearVelocity(b2Vec2_zero);
 		//se ejecuta antes del jump porque al pulsar espacio, no se ha aplicado la fuerza/actualizado la velocidad, por lo tanto es 0 y hay que esperar al siguiente frame. 
 	}
 
@@ -255,11 +256,11 @@ bool Player::Update()
 	{
 		pbody->body->SetLinearVelocity(b2Vec2(0, pbody->body->GetLinearVelocity().y));
 
-		if (currentAnimation != &idleRightAnimation && !inAir)
-		{
-			idleRightAnimation.Reset();
-			currentAnimation = &idleRightAnimation;
-		}
+		//if (currentAnimation != &idleRightAnimation && !inAir)
+		//{
+		//	idleRightAnimation.Reset();
+		//	currentAnimation = &idleRightAnimation;
+		//}
 	}
 
 	
@@ -324,8 +325,7 @@ void Player::Hurt() {
 	}
 
 	if (position.y > 800) {
-		position = oposPlayer;
-		pbody->body->SetTransform(b2Vec2(position.x, position.y), pbody->body->GetAngle());
+		pbody->body->SetTransform(oposPlayer, pbody->body->GetAngle());
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 	}
 

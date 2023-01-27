@@ -47,6 +47,15 @@ private:
 	SDL_Rect r;
 	Uint8 a;
 
+	enum Scenes {
+		LOGO,
+		MAINMENU,
+		LVL1,
+		LVL2
+	};
+	Scenes currentScene = MAINMENU;
+
+
 	//bool go_black = false;
 	//bool return_black = false;
 	//int fade_speed = 2;

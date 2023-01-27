@@ -115,6 +115,7 @@ private:
 	pugi::xml_document configFile;
 	pugi::xml_node configNode;
 
+	SDL_Texture* background;
 	uint frames;
 	float dt;
 

@@ -66,6 +66,19 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+	switch (currentScene) {
+	case LOGO:
+		break;
+	case MAINMENU:
+		break;
+	case LVL1:
+		break;
+	case LVL2:
+		break;
+	}
+
+
+
 	return true;
 }
 

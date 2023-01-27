@@ -88,12 +88,17 @@ bool App::Awake()
 	if (ret == true)
 	{
 		title = configNode.child("app").child("title").child_value(); // L01: DONE 4: Read the title from the config file
-
+		SString backgroundPath = configNode.child("app").child("scene").child("background").child_value();
+		background = app->tex->Load(backgroundPath);
+	
 		// L14: DONE 1: Read from config file your framerate cap
 		maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
 
 		ListItem<Module*>* item;
 		item = modules.start;
+
+	
+		
 
 		while (item != NULL && ret == true)
 		{
@@ -105,6 +110,8 @@ bool App::Awake()
 			ret = item->data->Awake(node);
 			item = item->next;
 		}
+
+
 	}
 
 	return ret;
