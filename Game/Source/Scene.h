@@ -40,6 +40,9 @@ public:
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
 	Background* background;
+	Background* menu;
+	
+		 
 	//SDL_Texture* title_screen;
 	//int current_lvl = 0;
 	//float x = 50, y = 500;
@@ -50,12 +53,13 @@ private:
 	Uint8 a;
 
 	enum Scenes {
-		LOGO,
+		LOGO = 0,
+		MAINMENUENTRY,
 		MAINMENU,
 		LVL1,
-		LVL2
+		LVL2 
 	};
-	Scenes currentScene = MAINMENU;
+	Scenes currentScene = (Scenes)0;
 
 
 	//bool go_black = false;

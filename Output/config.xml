@@ -31,6 +31,13 @@
     <item x="200" y="672" texturepath="Assets/Textures/goldCoin.png"/>
     <item x="500" y="672" texturepath="Assets/Textures/goldCoin.png"/>
     <background texturepath="Assets/Textures/LogoScreen.png"/>
+    <menu texturepath="Assets/Textures/Main Title.png"/>
+    <play texturepath="Assets/Textures/Menu/Buttons/Play.png"/>
+    <next texturepath="Assets/Textures/Menu/Buttons/Next.png"/>
+    <settings texturepath="Assets/Textures/Menu/Buttons/Settings.png"/>
+    <volume texturepath="Assets/Textures/Menu/Buttons/Volume.png"/>
+    <text texturepath="Assets/Textures/Menu/Text/texto.png"/>
+    <exit texturepath="Assets/Textures/Menu/Buttons/Close.png"/> 
   </scene>
 
   <map>

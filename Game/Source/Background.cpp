@@ -45,7 +45,7 @@ bool Background::PostUpdate(float dt) {
 	position.x = (windowsSize.w / 2.0f) - sizeX;
 	position.y = (windowsSize.h / 2.0f) - sizeY;
 	app->render->DrawTexture(texture, position.x, position.y);
-	
+	app->render->DrawRectangle(windowsSize, 0, 0, 0, alpha);
 
 	return true;
 
@@ -53,4 +53,25 @@ bool Background::PostUpdate(float dt) {
 
 bool Background::CleanUp() {
 	return true;
+}
+
+void Background::FadeOut(float dt)
+{
+	if (alpha != 255.0f) {
+		alpha += speed * dt;
+		if (alpha > 255.0f) {
+			alpha = 255.0f;
+		}
+	}
+}
+
+void Background::FadeIn(float dt)
+{
+	if (alpha != 0.0f) {
+		alpha -= speed * dt;
+		if (alpha < 0.0f) {
+			alpha = 0.0f;
+		}
+	}
+	std::cout << alpha << std::endl;
 }

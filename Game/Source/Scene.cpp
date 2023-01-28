@@ -35,11 +35,15 @@ bool Scene::Awake(pugi::xml_node& config)
 	}
 
 	//L02: DONE 3: Instantiate the player using the entity manager
-	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-	player->parameters = config.child("player");
+	//player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+	//player->parameters = config.child("player");
 
 	background = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);//creamos entidad background
 	background->parameters = config.child("background");
+	menu = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);//creamos entidad background
+	menu->parameters = config.child("menu");
+	menu->Disable();
+	menu->alpha = 255.0f;
 	return ret;
 }
 
@@ -87,6 +91,28 @@ bool Scene::PreUpdate(float dt)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	switch (currentScene) {
+	case LOGO:
+		background->FadeOut(dt);
+		if (background->alpha == 255.0f) {
+			currentScene = (Scenes)(currentScene + 1);
+			background->alpha = 0.0f;
+			background->Disable();
+			menu->Enable();
+		}
+		break;
+	case MAINMENUENTRY:
+		menu->FadeIn(dt);
+		if (menu->alpha == 0.0f) {
+			currentScene = (Scenes)(currentScene + 1);
+			
+		}
+
+
+
+	}
+
+
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
@@ -117,7 +143,7 @@ bool Scene::Update(float dt)
 	app->win->GetWindowSize(x, y);
 	//app->render->camera.x = -(app->scene->player->position.x + (x / 2));
 
-	app->render->camera.x = -app->scene->player->position.x + (x / 2);
+	//app->render->camera.x = -app->scene->player->position.x + (x / 2);
 
 	if (app->render->camera.x > 0) {
 		app->render->camera.x = 0;
@@ -126,7 +152,7 @@ bool Scene::Update(float dt)
 		app->render->camera.x = -5600;
 	}
 
-	std::cout << app->render->camera.x << std::endl;
+	
 	// Draw map
 	app->map->Draw();
 

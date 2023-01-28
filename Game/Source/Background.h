@@ -20,12 +20,23 @@ public:
 	bool PostUpdate(float dt);
 
 	bool CleanUp();
+
+	void FadeOut(float dt),
+		FadeIn(float dt);
+
+
+
+	float speed = 0.1f;
+	float alpha = 0;
+
 private:
 	SDL_Texture* texture;
 	const char* texturePath;
 	int
 		sizeX,
 		sizeY;
+	
+
 
 
 
