@@ -23,6 +23,10 @@ public:
 private:
 	SDL_Texture* texture;
 	const char* texturePath;
+	int
+		sizeX,
+		sizeY;
+
 
 
 };
