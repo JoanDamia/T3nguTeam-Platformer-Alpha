@@ -1,56 +1,55 @@
-/*
 #include "guibutton.h"
 #include "render.h"
 #include "app.h"
 #include "audio.h"
 #include "log.h"
 
-guibutton::guibutton(uint32 id, sdl_rect bounds, const char* text) : guicontrol(guicontroltype::button, id)
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
 
-	canclick = true;
-	drawbasic = false;
+	canClick = true;
+	drawBasic = false;
 
-	audiofxid = app->audio->loadfx("assets/audio/fx/retro-video-game-coin-pickup-38299.ogg");
+	audioFxId = app->audio->LoadFx("assets/audio/fx/retro-video-game-coin-pickup-38299.ogg");
 }
 
-guibutton::~guibutton()
+GuiButton::~GuiButton()
 {
 
 }
 
-bool guibutton::update(float dt)
+bool GuiButton::Update(float dt)
 {
-	if (state != guicontrolstate::disabled)
+	if (state != GuiControlState::DISABLED)
 	{
 		// l15: done 3: update the state of the guibutton according to the mouse position
-		app->input->getmouseposition(mousex, mousey);
+		app->input->GetMousePosition(mouseX, mouseY);
 
-		guicontrolstate previousstate = state;
+		GuiControlState previousstate = state;
 
 		// i'm inside the limitis of the button
-		if (mousex >= bounds.x && mousex <= bounds.x + bounds.w &&
-			mousey >= bounds.y && mousey <= bounds.y + bounds.h) {
+		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
+			mouseY >= bounds.y && mouseY <= bounds.y + bounds.h) {
 
-			state = guicontrolstate::focused;
+			state = GuiControlState::FOCUSED;
 			if (previousstate != state) {
-				log("change state from %d to %d", previousstate, state);
-				app->audio->playfx(audiofxid);
+				LOG("change state from %d to %d", previousstate, state);
+				app->audio->PlayFx(audioFxId);
 			}
 
-			if (app->input->getmousebuttondown(sdl_button_left) == keystate::key_repeat) {
-				state = guicontrolstate::pressed;
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
+				state = GuiControlState::PRESSED;
 			}
 
 			//
-			if (app->input->getmousebuttondown(sdl_button_left) == keystate::key_up) {
-				notifyobserver();
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP) {
+				NotifyObserver();
 			}
 		}
 		else {
-			state = guicontrolstate::normal;
+			state = GuiControlState::NORMAL;
 		}
 	}
 
@@ -60,27 +59,27 @@ bool guibutton::update(float dt)
 
 
 
-bool guibutton::draw(render* render)
+bool GuiButton::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
 
 	switch (state)
 	{
-	case guicontrolstate::disabled:
-		render->drawrectangle(bounds, 200, 200, 200, 255, true, false);
+	case GuiControlState::DISABLED:
+		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
 		break;
-	case guicontrolstate::normal:
-		render->drawrectangle(bounds, 0, 0, 255, 255, true, false);
+	case GuiControlState::NORMAL:
+		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
 		break;
-	case guicontrolstate::focused:
-		render->drawrectangle(bounds, 0, 0, 20, 255, true, false);
+	case GuiControlState::FOCUSED:
+		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
 		break;
-	case guicontrolstate::pressed:
-		render->drawrectangle(bounds, 0, 255, 0, 255, true, false);
+	case GuiControlState::PRESSED:
+		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
 		break;
 	}
 
-	app->render->drawtext(text.getstring(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
+	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
 
 	return false;
-}*/
+}

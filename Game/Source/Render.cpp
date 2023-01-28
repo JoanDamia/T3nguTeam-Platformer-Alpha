@@ -232,6 +232,40 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	return ret;
 }
 
+bool Render::DrawText(int x, int y, char* text) {
+
+	SDL_Rect rect;
+	rect.w = 8;
+	rect.h = 10;
+
+	for (int i = 0; text[i] != '\0' ; i++) {
+		char c = text[i];
+		if (c >= 'A' && c <= 'J') {
+			c -= 'A';
+			rect.x = c * rect.w;
+			rect.y = 0;
+		}
+		else if (c >= 'K' && c <= 'T') {
+			c -= 'K';
+			rect.x = c * rect.w;
+			rect.y = rect.h;
+		}
+		else if (c >= 'U' && c <= 'Z') {
+			c -= 'U';
+			rect.x = c * rect.w;
+			rect.y = rect.h * 2;
+		}
+		else if (c >= '0' && c <= '9') {
+			c -= '0';
+			rect.x = c * rect.w;
+			rect.y = rect.h * 3;
+		}
+
+		DrawTexture(textTexture, x, y, &rect);
+		x += rect.w;
+	}
+}
+
 // L03: DONE 6: Implement a method to load the state
 // for now load camera's x and y
 bool Render::LoadState(pugi::xml_node& data)

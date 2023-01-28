@@ -1,4 +1,4 @@
-/*
+
 #ifndef __GUIBUTTON_H__
 #define __GUIBUTTON_H__
 
@@ -27,4 +27,3 @@ public:
 };
 
 #endif // __GUIBUTTON_H__
-*/

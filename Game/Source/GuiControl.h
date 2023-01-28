@@ -1,4 +1,4 @@
-/*
+
 #ifndef __GUICONTROL_H__
 #define __GUICONTROL_H__
 
@@ -95,4 +95,3 @@ public:
 };
 
 #endif // __GUICONTROL_H__
-*/
