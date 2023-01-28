@@ -87,10 +87,7 @@ bool App::Awake()
 
 	if (ret == true)
 	{
-		title = configNode.child("app").child("title").child_value(); // L01: DONE 4: Read the title from the config file
-		SString backgroundPath = configNode.child("app").child("scene").child("background").child_value();
-		background = app->tex->Load(backgroundPath);
-	
+		
 		// L14: DONE 1: Read from config file your framerate cap
 		maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
 
@@ -184,6 +181,7 @@ bool App::LoadConfig()
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+
 }
 
 // ---------------------------------------------
@@ -215,6 +213,7 @@ void App::FinishUpdate()
 	// L14: DONE 3: Measure accurately the amount of time SDL_Delay() actually waits compared to what was expected
 
 	float delay = float(maxFrameDuration) - dt;
+	//float delay = float(maxFrameDuration) - ptimer.ReadMs();
 
 	PerfTimer delayTimer = PerfTimer();
 	delayTimer.Start();
@@ -226,7 +225,8 @@ void App::FinishUpdate()
 	else {
 		//LOG("No wait");
 	}
-
+	dt = ptimer.ReadMs();
+	ptimer.Start();
 	// Shows the time measurements in the window title
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %I64u ",
@@ -251,7 +251,7 @@ bool App::PreUpdate()
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+		ret = item->data->PreUpdate(dt);
 	}
 
 	return ret;
@@ -294,7 +294,7 @@ bool App::PostUpdate()
 			continue;
 		}
 
-		ret = item->data->PostUpdate();
+		ret = item->data->PostUpdate(dt);
 	}
 
 	return ret;

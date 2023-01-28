@@ -57,8 +57,8 @@ bool Player::Start() {
 	currentAnimation = &idleRightAnimation;
 
 	idleRightAnimation.loop = idleLeftAnimation.loop = goRightAnimation.loop = goLeftAnimation.loop = true;
-	idleRightAnimation.speed = idleLeftAnimation.speed = 15.0f;
-	goRightAnimation.speed = goLeftAnimation.speed = 15.0f;
+	idleRightAnimation.speed = idleLeftAnimation.speed = 0.05f;
+	goRightAnimation.speed = goLeftAnimation.speed = 0.05f;
 
 	for (int i = 0; i < 11; i++)//for porque vamos metiendo sprites (es un array) y le cambiamos el valor de x en cada iteración. Hasta llegar al sprite que queremos
 	{
@@ -105,38 +105,30 @@ bool Player::Start() {
 	return true;
 }
 
-// Called each loop iteration
-bool Player::PreUpdate()
-{
-	position.x = pbody->body->GetPosition().x;
-	position.y = pbody->body->GetPosition().y;
 
 
-	return true;
-}
-
-Uint64 NOW = SDL_GetPerformanceCounter(); //tiempo de la primera ejecución sin el update
+//Uint64 NOW = SDL_GetPerformanceCounter(); //tiempo de la primera ejecución sin el update
 
 bool velNeg = false;
 //bool doubleJump = true; 
 Uint8 jumps = 2;
 bool spacePressed = false;
 
-bool Player::Update()
+bool Player::Update(float dt)
 {
 
 	Hurt();
-	Uint64 LAST = NOW; //cuando hacemos el update, en que tiempo estamos ahora (tic).
-	NOW = SDL_GetPerformanceCounter();
+	//Uint64 LAST = NOW; //cuando hacemos el update, en que tiempo estamos ahora (tic).
+	//NOW = SDL_GetPerformanceCounter();
 
-	double deltaTime = ((NOW - LAST) / (double)SDL_GetPerformanceFrequency()); //Ene ste caso tenemos el último y el actual con la resta
+	//double deltaTime = ((NOW - LAST) / (double)SDL_GetPerformanceFrequency()); //Ene ste caso tenemos el último y el actual con la resta
 
 	//current animation indica la animacion actual y no va a cambiar hasta que se otra animacion diferente
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics
 	//atencio, s'ha comentat la segona línia després d'aquesta
 
-	int speed = 500 * deltaTime;
+	int speed = 0.75 * dt;
 	b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
 	
 
@@ -243,7 +235,7 @@ bool Player::Update()
 		if (jumps != 0) {
 			jumps--;
 			pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-		    pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
+		    pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) dt }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
 			//app->audio->PlayFx(jump_sound);
 			inAir = true;
 			jumpRightAnimation.Reset();
@@ -278,7 +270,7 @@ bool Player::Update()
 
 	SDL_Rect currentSprite = currentAnimation->GetCurrentFrame(); //dona el fram actual de l'animación actual. Después se debe actualizar al siguiente frame
 	app->render->DrawTexture(texture, position.x, position.y, &currentSprite); //añadimos el current sprite para decirle que dibuje x rectangulo, current sprite lo pasamos en referencia.
-	currentAnimation->Update(deltaTime);//pasar al render
+	currentAnimation->Update(dt);//pasar al render
 	
 
 	return true;
@@ -329,7 +321,7 @@ void Player::Hurt() {
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 	}
 
-	std::cout << position.y << std::endl;
+	
 }
 
 bool Player::Load(pugi::xml_node& data)

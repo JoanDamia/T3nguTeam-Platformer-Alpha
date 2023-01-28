@@ -12,7 +12,8 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
-	UNKNOWN
+	UNKNOWN,
+	BACKGROUND
 };
 
 class Entity
@@ -31,7 +32,17 @@ public:
 		return true;
 	}
 
-	virtual bool Update()
+	virtual bool PreUpdate(float dt)
+	{
+		return true;
+	}
+
+	virtual bool Update(float dt)
+	{
+		return true;
+	}
+
+	virtual bool PostUpdate(float dt)
 	{
 		return true;
 	}

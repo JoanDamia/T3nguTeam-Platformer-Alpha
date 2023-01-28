@@ -65,8 +65,8 @@ public:
 
 	// Main module steps
 	bool Start();
-	bool PreUpdate();
-	bool PostUpdate();
+	bool PreUpdate(float dt);
+	bool PostUpdate(float dt);
 	bool CleanUp();
 
 	// Create basic physics objects

@@ -38,7 +38,7 @@ public:
 		return !loop && !pingpong && loopCount > 0;
 	}
 
-	void Update(double dt) //pasamos delta time. Le decimos cuanto tiempo hay en cada frame, con speed.
+	void Update(float dt) //pasamos delta time. Le decimos cuanto tiempo hay en cada frame, con speed.
 	{
 		currentFrame += speed * dt; //al current frame le sumamos la velocidad i por cada update le suma uno. Dependiendo del fps va sumando diferentes valores.
 		if (currentFrame >= totalFrames)

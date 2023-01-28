@@ -46,7 +46,7 @@ bool Physics::Start()
 }
 
 // 
-bool Physics::PreUpdate()
+bool Physics::PreUpdate(float dt)
 {
 	bool ret = true;
 
@@ -220,7 +220,7 @@ PhysBody* Physics::CreateChain(int x, int y, int* points, int size, bodyType typ
 }
 
 // 
-bool Physics::PostUpdate()
+bool Physics::PostUpdate(float dt)
 {
 	bool ret = true;
 

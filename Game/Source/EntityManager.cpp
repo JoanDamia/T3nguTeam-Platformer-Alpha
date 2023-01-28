@@ -94,6 +94,10 @@ Entity* EntityManager::CreateEntity(EntityType type)
 		entity = new Item();
 		break;
 
+	case EntityType::BACKGROUND:
+		entity = new Background();
+		break;
+
 	default: break;
 	}
 
@@ -118,6 +122,21 @@ void EntityManager::AddEntity(Entity* entity)
 	if ( entity != nullptr) entities.Add(entity);
 }
 
+bool EntityManager::PreUpdate(float dt) {
+	bool ret = true;
+	ListItem<Entity*>* item;
+	Entity* pEntity = NULL;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		pEntity = item->data;
+
+		if (pEntity->active == false) continue;
+		ret = item->data->PreUpdate(dt);
+	}
+	return ret;
+}
+
 bool EntityManager::Update(float dt)
 {
 	bool ret = true;
@@ -129,9 +148,23 @@ bool EntityManager::Update(float dt)
 		pEntity = item->data;
 
 		if (pEntity->active == false) continue;
-		ret = item->data->Update();
+		ret = item->data->Update(dt);
 	}
+	return ret;
+}
 
+bool EntityManager::PostUpdate(float dt) {
+	bool ret = true;
+	ListItem<Entity*>* item;
+	Entity* pEntity = NULL;
+
+	for (item = entities.start; item != NULL && ret == true; item = item->next)
+	{
+		pEntity = item->data;
+
+		if (pEntity->active == false) continue;
+		ret = item->data->PostUpdate(dt);
+	}
 	return ret;
 }
 

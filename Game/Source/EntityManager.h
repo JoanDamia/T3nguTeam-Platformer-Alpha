@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Entity.h"
 #include "List.h"
+#include "iostream"
 
 class EntityManager : public Module
 {
@@ -20,8 +21,12 @@ public:
 	// Called after Awake
 	bool Start();
 
+	bool PreUpdate(float dt);
+
 	// Called every frame
 	bool Update(float dt);
+
+	bool PostUpdate(float dt);
 
 	// Called before quitting
 	bool CleanUp();

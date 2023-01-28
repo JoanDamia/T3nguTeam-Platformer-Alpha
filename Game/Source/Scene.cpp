@@ -38,6 +38,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
 	player->parameters = config.child("player");
 
+	background = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);//creamos entidad background
+	background->parameters = config.child("background");
 	return ret;
 }
 
@@ -64,7 +66,7 @@ bool Scene::Start()
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate()
+bool Scene::PreUpdate(float dt)
 {
 	switch (currentScene) {
 	case LOGO:
@@ -113,7 +115,10 @@ bool Scene::Update(float dt)
 	//Make the camera follow the player
 	uint x, y;
 	app->win->GetWindowSize(x, y);
+	//app->render->camera.x = -(app->scene->player->position.x + (x / 2));
+
 	app->render->camera.x = -app->scene->player->position.x + (x / 2);
+
 	if (app->render->camera.x > 0) {
 		app->render->camera.x = 0;
 	}
@@ -121,6 +126,7 @@ bool Scene::Update(float dt)
 		app->render->camera.x = -5600;
 	}
 
+	std::cout << app->render->camera.x << std::endl;
 	// Draw map
 	app->map->Draw();
 
@@ -128,7 +134,7 @@ bool Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool Scene::PostUpdate()
+bool Scene::PostUpdate(float dt)
 {
 	bool ret = true;
 

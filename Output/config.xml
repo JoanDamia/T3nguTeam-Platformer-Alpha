@@ -2,6 +2,7 @@
   <app>
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
+    <frcap value = "16"/>
   </app>
 
   <renderer>
@@ -29,7 +30,7 @@
     <item x="384" y="352" texturepath="Assets/Textures/goldCoin.png"/>
     <item x="200" y="672" texturepath="Assets/Textures/goldCoin.png"/>
     <item x="500" y="672" texturepath="Assets/Textures/goldCoin.png"/>
-    <background texturepath="Assets/Textures/LogoScreen"/>
+    <background texturepath="Assets/Textures/LogoScreen.png"/>
   </scene>
 
   <map>
