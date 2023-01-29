@@ -41,7 +41,7 @@ bool GuiSlider::Update(float dt)
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
-				sliderValue = (mouseX - bounds.x) / (bounds.x + bounds.w);
+				sliderValue = (float)(mouseX - bounds.x) / (float)(bounds.w);
 			}
 
 			//
@@ -67,20 +67,30 @@ bool GuiSlider::Draw(Render* render)
 	if (state == GuiControlState::DISABLED) {
 		return true;
 	}
+	float t = sliderValue * bounds.w;
+	SDL_Rect oT = bounds;
+	oT.w = t;
+	SDL_Rect tF = bounds;
+	tF.x = t;
+	tF.w = bounds.w - t;
+
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
 		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
 		break;
 	case GuiControlState::NORMAL:
-		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+		render->DrawRectangle(oT, 255, 0,0,255, true, false);
+		render->DrawRectangle(tF, 0,0,255, true, false);
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		render->DrawRectangle(oT, 255, 0, 0, 255, true, false);
+		render->DrawRectangle(tF, 0, 0, 255, true, false);
 		break;
 	case GuiControlState::PRESSED:
-		copyBounds.w = (float)copyBounds.w * sliderValue;
-		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		//copyBounds.w = (float)copyBounds.w * sliderValue;
+		render->DrawRectangle(oT, 255, 0, 0, 255, true, false);
+		render->DrawRectangle(tF, 0, 0, 255, true, false);
 
 		break;
 

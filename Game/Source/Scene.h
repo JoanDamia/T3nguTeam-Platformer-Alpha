@@ -73,6 +73,7 @@ private:
 	SDL_Texture* img;
 	SDL_Rect r;
 	Uint8 a;
+	pugi::xml_node& config = pugi::xml_node();
 
 	SDL_Texture* flag;
 

@@ -25,7 +25,7 @@ public:
 
 	uint audioFxId;
 
-	float sliderValue;
+	float sliderValue = 0.5;
 };
 
 #endif // __GUISLIDER_H__

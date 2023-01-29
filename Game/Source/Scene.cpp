@@ -45,14 +45,14 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->parameters = config.child("menu");
 	menu->Disable();
 	menu->alpha = 255.0f;
-	pugi::xml_node node = config.child("checkbox");
-	const char* textureCheckbox = node.attribute("texturepath").as_string();
+	
+	
 	_credits = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	_credits->parameters = config.child("credits");
 	death = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	death->parameters = config.child("dead");
 
-	node = config.child("flag");
+	pugi::xml_node node = config.child("flag");
 	flag = app->tex->Load(node.attribute("texturepath").as_string());
 	std::string a = node.attribute("texturepath").as_string();
 	victory = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
@@ -65,7 +65,19 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->Disable();
 	currentScene = LOGO;
 
+	this->config = config;
 
+	return true;
+}
+
+// Called before the first frame
+bool Scene::Start()
+{
+
+	pugi::xml_node node = config.child("checkbox");
+	const char* textureCheckbox = node.attribute("texturepath").as_string();
+	img = app->tex->Load("Assets/Textures/test.png");
+	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 	SDL_Rect rect;
 	rect.x = 450;
 	rect.y = 400;
@@ -81,7 +93,7 @@ bool Scene::Awake(pugi::xml_node& config)
 	rect.w = 55;
 	rect.h = 10;
 	_continue = new GuiButton(1, rect, "CONTINUE");
-	
+
 	_continue->SetObserver(this);
 	_continue->state = GuiControlState::DISABLED;
 
@@ -164,14 +176,6 @@ bool Scene::Awake(pugi::xml_node& config)
 	inGameSettings = new GuiButton(10, rect, "SETTINGS");
 	inGameSettings->SetObserver(this);
 	inGameSettings->state = GuiControlState::DISABLED;
-	return ret;
-}
-
-// Called before the first frame
-bool Scene::Start()
-{
-	img = app->tex->Load("Assets/Textures/test.png");
-	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 	
 	// L03: DONE: Load map
 	app->map->Load();
@@ -231,6 +235,7 @@ bool Scene::Update(float dt)
 		_continue->state = GuiControlState::NORMAL;
 		settings->state = GuiControlState::NORMAL;
 		credits->state = GuiControlState::NORMAL;
+		_credits->Disable();
 		exit->state = GuiControlState::NORMAL;
 		musicVolume->state = GuiControlState::DISABLED;
 		fxVolume->state = GuiControlState::DISABLED;
@@ -238,6 +243,13 @@ bool Scene::Update(float dt)
 		vsync->state = GuiControlState::DISABLED;
 		break;
 	case SETTINGS:
+		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
+			currentScene = MAINMENU;
+
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN) {
+			currentScene = LVL1;
+		}
 		musicVolume->state = GuiControlState::NORMAL;
 		fxVolume->state = GuiControlState::NORMAL;
 		fullscreen->state = GuiControlState::NORMAL;
@@ -250,8 +262,13 @@ bool Scene::Update(float dt)
 		break;
 	case CREDITS:
 		_credits->Enable();
+		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
+			currentScene = MAINMENU;
+
+		}
 		back->state = GuiControlState::NORMAL;
 		_continue->state = GuiControlState::DISABLED;
+		settings->state = GuiControlState::DISABLED;
 		newGame->state = GuiControlState::DISABLED;
 		credits->state = GuiControlState::DISABLED;
 		exit->state = GuiControlState::DISABLED;
@@ -259,7 +276,13 @@ bool Scene::Update(float dt)
 	case LVL1:
 		player->Enable();
 		menu->Disable();
-		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		musicVolume->state = GuiControlState::DISABLED;
+		fxVolume->state = GuiControlState::DISABLED;
+		fullscreen->state = GuiControlState::DISABLED;
+		vsync->state = GuiControlState::DISABLED;
+		back->state = GuiControlState::DISABLED;
+		if (app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+			menu->Enable();
 			currentScene = SETTINGS;
 		}
 		uint x, y;

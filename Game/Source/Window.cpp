@@ -109,5 +109,12 @@ void Window::WindowsMode(bool fullscreen) {
 	//	flags |= SDL_RENDERER_PRESENTVSYNC;
 	//}
 	//app->render->renderer = SDL_CreateRenderer(app->win->window, -1, flags);
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+
+	if(fullscreen){
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	}
+	else {
+
+		SDL_SetWindowSize(window, width , height);
+	}
 }

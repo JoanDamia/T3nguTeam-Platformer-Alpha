@@ -11,7 +11,7 @@ GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, const cha
 	this->bounds = bounds;
 	this->texture = texture;
 	this->text = text;
-
+	texture = app->tex->Load(texturePath);
 	canClick = true;
 	drawBasic = false;
 
@@ -24,7 +24,7 @@ GuiCheckbox::~GuiCheckbox()
 }
 
 bool GuiCheckbox::Start() {
-	texture = app->tex->Load(texturePath);
+	
 	return true;
 }
 
@@ -81,14 +81,26 @@ bool GuiCheckbox::Draw(Render* render)
 		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
 		break;
 	case GuiControlState::NORMAL:
+
 		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
-		render->DrawTexture(texture, bounds.x - 40, bounds.y);
+
+		if (check) {
+			render->DrawTexture(texture, bounds.x - 10, bounds.y - 140);
+		}
+		
+
 		break;
 	case GuiControlState::FOCUSED:
 		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		if (check) {
+			render->DrawTexture(texture, bounds.x - 10, bounds.y - 140);
+		}
 		break;
 	case GuiControlState::PRESSED:
 		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		if (check) {
+			render->DrawTexture(texture, bounds.x - 10, bounds.y - 140);
+		}
 		break;
 	}
 
