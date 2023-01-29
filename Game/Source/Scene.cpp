@@ -45,18 +45,13 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->parameters = config.child("menu");
 	menu->Disable();
 	menu->alpha = 255.0f;
-	
-	
+	victory = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
+	victory->parameters = config.child("victory");
 	_credits = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	_credits->parameters = config.child("credits");
 	death = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	death->parameters = config.child("dead");
 
-	pugi::xml_node node = config.child("flag");
-	flag = app->tex->Load(node.attribute("texturepath").as_string());
-	std::string a = node.attribute("texturepath").as_string();
-	victory = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
-	victory->parameters = config.child("victory");
 
 	death->Disable();
 	victory->Disable();
@@ -73,8 +68,11 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
+	pugi::xml_node node = config.child("flag");
+	flag = app->tex->Load(node.attribute("texturepath").as_string());
 
-	pugi::xml_node node = config.child("checkbox");
+
+	node = config.child("checkbox");
 	const char* textureCheckbox = node.attribute("texturepath").as_string();
 	img = app->tex->Load("Assets/Textures/test.png");
 	app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
@@ -83,7 +81,7 @@ bool Scene::Start()
 	rect.y = 400;
 	rect.w = 55;
 	rect.h = 10;
-	newGame = new GuiButton(0, rect, "NEWGAME");
+	newGame = new GuiButton(0, rect, "NEW GAME");
 	newGame->SetObserver(this);
 	newGame->state = GuiControlState::DISABLED;
 
@@ -129,7 +127,7 @@ bool Scene::Start()
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
-	fullscreen = new GuiCheckbox(5, rect, "FULLSCREEN", textureCheckbox);
+	fullscreen = new GuiCheckbox(5, rect, "FULL SCREEN", textureCheckbox);
 	fullscreen->SetObserver(this);
 	fullscreen->state = GuiControlState::DISABLED;
 
@@ -213,6 +211,9 @@ bool Scene::PreUpdate(float dt)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
+	// Draw map
+	app->map->Draw();
 
 	switch (currentScene) {
 	case LOGO:
@@ -316,9 +317,7 @@ bool Scene::Update(float dt)
 		break;
 	case VICTORY:
 		player->Disable();
-		if (victory->active == false) {
-			victory->Enable();
-		}
+		victory->Enable();
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 			currentScene = MAINMENU;
 		}
@@ -363,9 +362,7 @@ bool Scene::Update(float dt)
 		app->render->camera.x = -5600;
 	}
 
-	
-	// Draw map
-	app->map->Draw();
+
 
 	return true;
 }
@@ -407,7 +404,7 @@ bool Scene::PostUpdate(float dt)
 	if (currentScene == LVL1) {
 		std::string text = std::to_string(timer.ReadTicks()) + "  LIFE  " + std::to_string(player->healthPoints);
 		app->render->DrawText(player->position.x, 0, text.c_str());
-		app->render->DrawTexture(flag, 1770, 548);
+		app->render->DrawTexture(flag, 1749, 520);
 	}
 
 	return ret;
@@ -426,20 +423,20 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control) {
 	if (text == "SETTINGS") {
 		currentScene = SETTINGS;
 	}
-	else if (text == "NEWGAME") {
+	else if (text == "NEW GAME") {
 		timer.Start();
 		currentScene = LVL1;
 	}
 	else if (text == "CONTINUE") {
 		app->LoadFromFile();
 	}
-	else if (text == "MUSICVOLUME") {
+	else if (text == "MUSIC VOLUME") {
 		//TODOcurrentScene = ;
 	}
 	else if (text == "FX") {
 		//TODO
 	}
-	else if (text == "FULLSCREEN") {
+	else if (text == "FULL SCREEN") {
 		app->win->WindowsMode(fullscreen->check);
 	}
 	else if (text == "VSYNC") {
