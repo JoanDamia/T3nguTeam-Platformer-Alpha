@@ -48,17 +48,8 @@ public:
 	Background* background;
 	Background* menu;
 	Background* _credits;
-	
-		 
-	//SDL_Texture* title_screen;
-	//int current_lvl = 0;
-	//float x = 50, y = 500;
-	
-
-private:
-	SDL_Texture* img;
-	SDL_Rect r;
-	Uint8 a;
+	Background* death;
+	Background* victory;
 
 	enum Scenes {
 		LOGO = 0,
@@ -67,11 +58,23 @@ private:
 		SETTINGS,
 		CREDITS,
 		PAUSEMENU,
+		DEADSCREEN,
 		LVL1,
-		LVL2 
+		LVL2,
+		VICTORY
 	};
+		 
+	//SDL_Texture* title_screen;
+	//int current_lvl = 0;
+	//float x = 50, y = 500;
 	Scenes currentScene = (Scenes)0;
 
+private:
+	SDL_Texture* img;
+	SDL_Rect r;
+	Uint8 a;
+
+	SDL_Texture* flag;
 
 	GuiButton* newGame;
 	GuiButton* _continue;

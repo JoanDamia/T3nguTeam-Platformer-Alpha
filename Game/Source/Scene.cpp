@@ -49,7 +49,17 @@ bool Scene::Awake(pugi::xml_node& config)
 	SDL_Texture* textureCheckbox = app->tex->Load(node.attribute("texturepath").as_string());
 	_credits = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	_credits->parameters = config.child("credits");
+	death = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
+	death->parameters = config.child("dead");
 
+	node = config.child("flag");
+	flag = app->tex->Load(node.attribute("texturepath").as_string());
+	std::string a = node.attribute("texturepath").as_string();
+	victory = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
+	victory->parameters = config.child("victory");
+
+	death->Disable();
+	victory->Disable();
 	_credits->Disable();
 	background->Enable();
 	menu->Disable();
@@ -266,7 +276,25 @@ bool Scene::Update(float dt)
 		break;
 
 	case PAUSEMENU:
+		player->Disable();
+
 		break;
+	case DEADSCREEN:
+		player->Disable();
+		death->Enable();
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			currentScene = MAINMENU;
+		}
+		break;
+	case VICTORY:
+		player->Disable();
+		if (victory->active == false) {
+			victory->Enable();
+		}
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+			currentScene = MAINMENU;
+		}
+			break;
 	}
 
 
@@ -351,6 +379,7 @@ bool Scene::PostUpdate(float dt)
 	if (currentScene == LVL1) {
 		std::string text = std::to_string(timer.ReadTicks()) + "  LIFE  " + std::to_string(player->healthPoints);
 		app->render->DrawText(player->position.x, 0, text.c_str());
+		app->render->DrawTexture(flag, 1770, 548);
 	}
 
 	return ret;

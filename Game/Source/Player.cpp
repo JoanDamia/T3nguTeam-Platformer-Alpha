@@ -118,7 +118,10 @@ bool spacePressed = false;
 
 bool Player::Update(float dt)
 {
-
+	std::cout << position.x << " " << position.y << std::endl;
+	if (position.x > 1770) {
+		app->scene->currentScene = app->scene->VICTORY;
+	}
 	Hurt();
 	//Uint64 LAST = NOW; //cuando hacemos el update, en que tiempo estamos ahora (tic).
 	//NOW = SDL_GetPerformanceCounter();
@@ -206,32 +209,7 @@ bool Player::Update(float dt)
 
 	velNeg = pbody->body->GetLinearVelocity().y < 0.0f; //comprobamos si la velocidad es negativa para evitar que cuando el jugador se pare al chocar contra un muro superior continuie saltando continuamente mientras tengamos pulsado el espacio
 
-	//jump
-	//if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-	//{
-	//	if (!inAir)
-	//	{
-	//		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-	//		pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32) deltaTime }, true); //cuando convetrimos podemos hacerlo como con el dt pero en c++ se puede hacer como float32(variable)
-	//		//app->audio->PlayFx(jump_sound);
-	//
 
-	//		inAir = true;
-	//	}
-
-	//	else if (doubleJump) {
-	//		pbody->body->SetLinearVelocity({ pbody->body->GetLinearVelocity().x , 0 });
-	//		pbody->body->ApplyForceToCenter({ 0, -jumpForce * (float32)deltaTime }, true); 
-	//		//app->audio->PlayFx(jump_sound);
-	//		doubleJump = false;
-	//	}
-	//
-	//	if (currentAnimation != &jumpRightAnimation && !inAir)
-	//	{
-	//		jumpRightAnimation.Reset();
-	//		currentAnimation = &jumpRightAnimation;
-	//	}
-	//}
 
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		if (jumps != 0) {
@@ -314,8 +292,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 void Player::Hurt() {
 
 	if (healthPoints == 0) {
-
-
+		app->scene->currentScene = app->scene->DEADSCREEN;
 	}
 
 	if (position.y > 800) {

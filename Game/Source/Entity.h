@@ -14,6 +14,7 @@ enum class EntityType
 	ITEM,
 	UNKNOWN,
 	BACKGROUND,
+	FLAG,
 	TEXT
 };
 

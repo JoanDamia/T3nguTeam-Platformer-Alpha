@@ -40,6 +40,9 @@
     <exit texturepath="Assets/Textures/Menu/Buttons/Close.png"/>
     <checkbox texturepath ="Assets/Textures/Menu/Buttons/tick.png"/>
     <credits texturepath="Assets/Textures/credits.png"/>
+    <dead texturepath="Assets/Textures/DeadScreen.png"/>
+    <victory texturepath="Assets/Textures/victory.png"/>
+    <flag texturepath="Assets/Textures/Items/Checkpoints/End/end.png"/>
   </scene>
 
   <map>
