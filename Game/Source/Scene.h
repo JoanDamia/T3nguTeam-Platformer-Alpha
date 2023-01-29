@@ -87,6 +87,8 @@ private:
 	GuiButton* exit;
 	GuiButton* credits;
 
+	PerfTimer timer;
+
 	//bool go_black = false;
 	//bool return_black = false;
 	//int fade_speed = 2;

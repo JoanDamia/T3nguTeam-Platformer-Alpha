@@ -53,11 +53,14 @@ bool Map::Start() {
                 if (gid > 0) {
                     TileSet* tileset = GetTilesetFromTileId(gid);
                     tileset->name;
-                    std::cout << tileset->name.GetString() << std::endl;
-                    if (tileset->name == "Colisions") {
+                    if (mapLayerItem->data->name == "Colisions")
+                    {
+                        PhysBody* c1 = app->physics->CreateRectangle(x,y,32,32, STATIC);
+                        // L07 DONE 7: Assign collider type
+                        c1->ctype = ColliderType::PLATFORM;
+                        std::cout << x <<" "<< y << std::endl;
                     }
                 }
-                
             }
         }
     }
@@ -475,10 +478,10 @@ bool Map::Load()
     PhysBody* c35 = app->physics->CreateRectangle(336 + 1113, 687 - 185, 53, 48, STATIC);
     c35->ctype = ColliderType::PLATFORM;
 
-    //Gold Blocc2
+    ////Gold Blocc2
 
-    PhysBody* c36 = app->physics->CreateRectangle(336 + 1210, 687 - 215, 53, 48, STATIC);
-    c36->ctype = ColliderType::PLATFORM;
+    //PhysBody* c36 = app->physics->CreateRectangle(336 + 1210, 687 - 215, 53, 48, STATIC);
+    //c36->ctype = ColliderType::PLATFORM;
 
     if (ret == true)
     {

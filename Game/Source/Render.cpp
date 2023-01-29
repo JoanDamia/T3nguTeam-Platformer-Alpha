@@ -264,12 +264,14 @@ bool Render::DrawText(int x, int y, const char* text) {
 			rect.x = c * rect.w;
 			rect.y = rect.h * 3;
 		}
+
 		
 		//SDL_RenderCopy(renderer, textTexture, NULL, &rect1);
 
 
-
-		app->render->DrawTexture(textTexture, x, y, &rect);
+		if (c != ' ') {
+			app->render->DrawTexture(textTexture, x, y, &rect);
+		}
 		x += rect.w;
 	}
 	return true;

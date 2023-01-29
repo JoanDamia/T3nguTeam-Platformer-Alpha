@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "EntityManager.h"
 #include "Map.h"
+#include "string.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -347,6 +348,11 @@ bool Scene::PostUpdate(float dt)
 	int c_x = -app->render->camera.x;
 	r.x = c_x;
 
+	if (currentScene == LVL1) {
+		std::string text = std::to_string(timer.ReadTicks()) + "  LIFE  " + std::to_string(player->healthPoints);
+		app->render->DrawText(player->position.x, 0, text.c_str());
+	}
+
 	return ret;
 }
 
@@ -364,6 +370,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control) {
 		currentScene = SETTINGS;
 	}
 	else if (text == "NEWGAME") {
+		timer.Start();
 		currentScene = LVL1;
 	}
 	else if (text == "CONTINUE") {

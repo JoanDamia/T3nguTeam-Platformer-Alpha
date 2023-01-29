@@ -44,11 +44,13 @@ enum MapTypes
 // L06: DONE 5: Create a generic structure to hold properties
 struct Properties
 {
+	
 	struct Property
 	{
 		SString name;
 		bool value;
 		float numValue;
+		bool colision;
 	};
 
 	~Properties()

@@ -103,6 +103,9 @@ public:
 	Enemies* enemies;
 	//GuiManager* guiManager;
 
+	Timer timer;
+	PerfTimer ptimer;
+
 private:
 
 	int argc;
@@ -128,8 +131,7 @@ private:
 
 	// L13: DONE 4: Calculate some timing measures
 // required variables are provided:
-	Timer timer;
-	PerfTimer ptimer;
+
 
 	Timer startupTime;
 	Timer frameTime;

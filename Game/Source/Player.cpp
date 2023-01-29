@@ -321,6 +321,7 @@ void Player::Hurt() {
 	if (position.y > 800) {
 		pbody->body->SetTransform(oposPlayer, pbody->body->GetAngle());
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+		--healthPoints;
 	}
 
 	

@@ -10,11 +10,11 @@
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "MapStage2.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 0.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 901.3333333333333,
-                "y": 359.33333333333337
+                "x": 200,
+                "y": 107
             }
         },
         "MapStage2.tmx#MapMetadata": {
@@ -41,8 +41,8 @@
             "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 198.66666666666666,
-                "y": 489.3333333333333
+                "x": 372,
+                "y": 261.3333333333333
             }
         },
         "MapTemplate.tmx#Background2": {
@@ -88,6 +88,7 @@
         "sky.tsx"
     ],
     "project": "MapStage2.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "sky.tsx",
         "MapStage2.tmx",

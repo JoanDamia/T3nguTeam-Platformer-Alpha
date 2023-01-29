@@ -44,6 +44,8 @@ public:
 
 public:
 
+	Uint8 healthPoints = 3;
+
 private:
 
 	void Hurt();
@@ -58,7 +60,7 @@ private:
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 
 	
-	Uint8 healthPoints = 3;
+	
 	bool djump = true;
 	bool inAir = true;
 	float jumpForce = 10.0f;
