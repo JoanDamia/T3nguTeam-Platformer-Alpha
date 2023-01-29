@@ -135,11 +135,13 @@ bool App::Start()
 
 	return ret;
 }
+bool App::ret = true;
+
 
 // Called each loop iteration
 bool App::Update()
 {
-	bool ret = true;
+	ret = true;
 	PrepareUpdate();
 
 	if (input->GetWindowEvent(WE_QUIT) == true)

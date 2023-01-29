@@ -93,6 +93,8 @@ private:
 
 	PerfTimer timer;
 
+	bool showMap = true;
+
 	//bool go_black = false;
 	//bool return_black = false;
 	//int fade_speed = 2;

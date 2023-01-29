@@ -4,6 +4,7 @@
 #include "audio.h"
 #include "log.h"
 
+
 GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
 	this->bounds = bounds;
@@ -42,6 +43,7 @@ bool GuiSlider::Update(float dt)
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
 				sliderValue = (float)(mouseX - bounds.x) / (float)(bounds.w);
+				//Mix_MasterVolume(SDL_MIX_MAXVOLUME * sliderValue);
 			}
 
 			//

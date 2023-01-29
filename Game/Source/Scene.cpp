@@ -212,8 +212,11 @@ bool Scene::PreUpdate(float dt)
 bool Scene::Update(float dt)
 {
 
-	// Draw map
-	app->map->Draw();
+
+	if (showMap) {
+		// Draw map
+		app->map->Draw();
+	}
 
 	switch (currentScene) {
 	case LOGO:
@@ -232,6 +235,7 @@ bool Scene::Update(float dt)
 			
 		}
 	case MAINMENU:
+		showMap = false;
 		newGame->state = GuiControlState::NORMAL;
 		_continue->state = GuiControlState::NORMAL;
 		settings->state = GuiControlState::NORMAL;
@@ -242,6 +246,7 @@ bool Scene::Update(float dt)
 		fxVolume->state = GuiControlState::DISABLED;
 		fullscreen->state = GuiControlState::DISABLED;
 		vsync->state = GuiControlState::DISABLED;
+		menu->Enable();
 		break;
 	case SETTINGS:
 		if (app->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
@@ -275,6 +280,7 @@ bool Scene::Update(float dt)
 		exit->state = GuiControlState::DISABLED;
 		break;
 	case LVL1:
+		showMap = true;
 		player->Enable();
 		menu->Disable();
 		musicVolume->state = GuiControlState::DISABLED;
@@ -320,6 +326,8 @@ bool Scene::Update(float dt)
 		victory->Enable();
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 			currentScene = MAINMENU;
+			menu->alpha = 0;
+			menu->Enable();
 		}
 			break;
 	}
@@ -447,7 +455,7 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control) {
 		currentScene = MAINMENU;
 	}
 	else if (text == "EXIT") {
-		//TODO
+		App::ret = false;
 	}
 	else if (text == "CREDITS") {
 		currentScene = CREDITS;

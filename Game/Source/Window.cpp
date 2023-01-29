@@ -114,7 +114,6 @@ void Window::WindowsMode(bool fullscreen) {
 		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	}
 	else {
-
-		SDL_SetWindowSize(window, width , height);
+		SDL_SetWindowFullscreen(window, 0);
 	}
 }

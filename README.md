@@ -11,8 +11,21 @@ A game made buy a  not very talented student about a weird blue vr guy that jump
  - Load And Save features, wow!
  - Improved map
  - Camera follows player
- - Not achieved yet, but enemy module made
- - Pathfinder ready
+ - Menu with functional buttons
+ -credits, new game, settings...
+ -fullscreen functional (although rough, give it some time and tries)
+ -sliders functional, but don't affect volume
+ -settings menu while playing
+ -time counter
+ -dt
+ -lifes
+ -death screen once life goes to zero
+ -respawn
+ -victory screen makes the game stop, the condition is to make the player take the prize. If you win, escape to end the game, it's the only way
+ -Animations
+ -jumps and movement fixed
+ -better colliders
+ -fade in fade out
  - Colisions 
  
 ## Controls
@@ -22,6 +35,13 @@ A game made buy a  not very talented student about a weird blue vr guy that jump
  - Space: jump
  - A: Move left
  - D: Move right
+ - F9: no colisions/colisions
+ -p en juego para ir a settings
+ -g en settings para ir al juego
+ -m en settings para volver al menu
+ -m in credits to go to menu
+ -esc to quit at all times
+
 
 ## Developers
 

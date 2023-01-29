@@ -105,7 +105,7 @@ public:
 
 	Timer timer;
 	PerfTimer ptimer;
-
+	static bool ret;
 private:
 
 	int argc;
