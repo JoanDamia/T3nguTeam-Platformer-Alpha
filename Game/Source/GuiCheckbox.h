@@ -11,9 +11,10 @@ class GuiCheckbox : public GuiControl
 {
 public:
 
-	GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* texture);
+	GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, const char* texturePath);
 	virtual ~GuiCheckbox();
 
+	bool Start();
 	bool Update(float dt);
 	bool Draw(Render* render);
 
@@ -22,6 +23,7 @@ public:
 
 	bool canClick = true;
 	bool drawBasic = false;
+	const char* texturePath;
 
 	uint audioFxId;
 	bool check = false;

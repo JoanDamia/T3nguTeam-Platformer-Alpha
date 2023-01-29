@@ -3,11 +3,13 @@
 #include "app.h"
 #include "audio.h"
 #include "log.h"
+#include "Textures.h"
 
 
-GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* texture) : GuiControl(GuiControlType::CHECKBOX, id)
+GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, const char* texturePath) : GuiControl(GuiControlType::CHECKBOX, id)
 {
 	this->bounds = bounds;
+	this->texture = texture;
 	this->text = text;
 
 	canClick = true;
@@ -19,6 +21,11 @@ GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, SDL_Textu
 GuiCheckbox::~GuiCheckbox()
 {
 
+}
+
+bool GuiCheckbox::Start() {
+	texture = app->tex->Load(texturePath);
+	return true;
 }
 
 bool GuiCheckbox::Update(float dt)
@@ -75,7 +82,7 @@ bool GuiCheckbox::Draw(Render* render)
 		break;
 	case GuiControlState::NORMAL:
 		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
-		render->DrawTexture(texture, bounds.x - 20, bounds.y);
+		render->DrawTexture(texture, bounds.x - 40, bounds.y);
 		break;
 	case GuiControlState::FOCUSED:
 		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);

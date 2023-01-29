@@ -46,7 +46,7 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->Disable();
 	menu->alpha = 255.0f;
 	pugi::xml_node node = config.child("checkbox");
-	SDL_Texture* textureCheckbox = app->tex->Load(node.attribute("texturepath").as_string());
+	const char* textureCheckbox = node.attribute("texturepath").as_string();
 	_credits = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
 	_credits->parameters = config.child("credits");
 	death = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
@@ -259,6 +259,9 @@ bool Scene::Update(float dt)
 	case LVL1:
 		player->Enable();
 		menu->Disable();
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+			currentScene = SETTINGS;
+		}
 		uint x, y;
 		app->win->GetWindowSize(x, y);
 		app->render->camera.x = -(app->scene->player->position.x + (x / 2));
@@ -277,7 +280,9 @@ bool Scene::Update(float dt)
 
 	case PAUSEMENU:
 		player->Disable();
-
+		if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+			currentScene = LVL1;
+		}
 		break;
 	case DEADSCREEN:
 		player->Disable();
