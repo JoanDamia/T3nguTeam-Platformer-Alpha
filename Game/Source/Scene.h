@@ -6,6 +6,8 @@
 #include "Item.h"
 #include "Background.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckbox.h"
 
 struct SDL_Texture;
 
@@ -62,6 +64,7 @@ private:
 		MAINMENUENTRY,
 		MAINMENU,
 		SETTINGS,
+		CREDITS,
 		LVL1,
 		LVL2 
 	};

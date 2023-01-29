@@ -44,6 +44,9 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->parameters = config.child("menu");
 	menu->Disable();
 	menu->alpha = 255.0f;
+	pugi::xml_node node = config.child("checkbox");
+
+	SDL_Texture* textureCheckbox = app->tex->Load(node.attribute("texturepath").as_string());
 
 
 	background->Disable();
@@ -57,12 +60,16 @@ bool Scene::Awake(pugi::xml_node& config)
 	rect.w = 55;
 	rect.h = 10;
 	newGame = new GuiButton(0, rect, "NEWGAME");
+	newGame->text = "newGame";
+	newGame->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 450;
 	rect.w = 55;
 	rect.h = 10;
 	_continue = new GuiButton(1, rect, "CONTINUE");
+	_continue->text = "continue";
+	_continue->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 500;
@@ -76,43 +83,59 @@ bool Scene::Awake(pugi::xml_node& config)
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
-	musicVolume = new GuiButton(3, rect, "MUSIC");
+	musicVolume = new GuiSlider(3, rect, "MUSIC");
+	musicVolume->text = "musicVolume";
+	musicVolume->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
-	fxVolume = new GuiButton(4, rect, "FX");
+	fxVolume = new GuiSlider(4, rect, "FX");
+	fxVolume->text = "fxVolume";
+	fxVolume->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
-	fullscreen = new GuiButton(5, rect, "FULLSCREEN");
+	fullscreen = new GuiCheckbox(5, rect, "FULLSCREEN", textureCheckbox);
+	fullscreen->text = "fullscreen";
+	fullscreen->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
-	vsync = new GuiButton(6, rect, "VSYNC");
+	vsync = new GuiCheckbox(6, rect, "VSYNC", textureCheckbox);
+	vsync->text = "vsync";
+	vsync->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 550;
 	rect.w = 55;
 	rect.h = 10;
 	back = new GuiButton(7, rect, "BACK");
+	back->text = "back";
+	back->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 550;
 	rect.w = 55;
 	rect.h = 10;
 	exit = new GuiButton(8, rect, "EXIT");
+	exit->text = "exit";
+	exit->SetObserver(this);
+
 
 	rect.x = 450;
 	rect.y = 600;
 	rect.w = 55;
 	rect.h = 10;
 	credits = new GuiButton(9, rect, "CREDITS");
+	credits->text = "credits";
+	credits->SetObserver(this);
+
 
 	return ret;
 }
@@ -192,6 +215,8 @@ bool Scene::Update(float dt)
 		newGame->state = GuiControlState::DISABLED;
 		credits->state = GuiControlState::DISABLED;
 		exit->state = GuiControlState::DISABLED;
+	case CREDITS:
+		break;
 
 
 
@@ -287,8 +312,36 @@ bool Scene::CleanUp()
 }
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control) {
-	if (control->text == "settings") {
+	SString text = control->text;
+	if (text == "settings") {
 		currentScene = SETTINGS;
+	}
+	else if (text == "newGame") {
+		currentScene = LVL1;
+	}
+	else if (text == "continue") {
+		app->LoadFromFile();
+	}
+	else if (text == "musicVolume") {
+		//TODOcurrentScene = ;
+	}
+	else if (text == "fxVolume") {
+		//TODO
+	}
+	else if (text == "fullscreen") {
+		currentScene = LVL1;
+	}
+	else if (text == "vsync") {
+		currentScene = LVL1;
+	}
+	else if (text == "back") {
+		currentScene = LVL1;
+	}
+	else if (text == "exit") {
+		currentScene = LVL1;
+	}
+	else if (text == "credits") {
+		currentScene = LVL1;
 	}
 	return true;
 }

@@ -37,7 +37,9 @@
     <settings texturepath="Assets/Textures/Menu/Buttons/Settings.png"/>
     <volume texturepath="Assets/Textures/Menu/Buttons/Volume.png"/>
     <text texturepath="Assets/Textures/Menu/Text/texto.png"/>
-    <exit texturepath="Assets/Textures/Menu/Buttons/Close.png"/> 
+    <exit texturepath="Assets/Textures/Menu/Buttons/Close.png"/>
+    <checkbox texturepath ="Assets/Textures/Menu/Buttons/tick.png"/>
+    <credits texturepaths="Assets/Textures/credits.png"/>
   </scene>
 
   <map>

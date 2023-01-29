@@ -40,6 +40,8 @@ public:
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool useCamera = true) const;
 	bool DrawText(int x, int y, const char* text);
 
+
+
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 

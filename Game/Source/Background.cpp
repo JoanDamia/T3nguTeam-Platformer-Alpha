@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "iostream"
 #include "GuiButton.h"
+#include "Window.h"
 
 
 
@@ -24,7 +25,7 @@ Background::~Background() {
 
 
 bool Background::Start() {
-
+	app->win->WindowsMode(true);
 	texturePath = parameters.attribute("texturepath").as_string();
 	texture = app->tex->Load(texturePath);
 	SDL_QueryTexture(texture, NULL, NULL, &sizeX, &sizeY);

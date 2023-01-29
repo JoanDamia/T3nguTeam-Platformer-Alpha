@@ -5,7 +5,7 @@
 #include "log.h"
 
 
-GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* texture) : GuiControl(GuiControlType::CHECKBOX, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -43,6 +43,7 @@ bool GuiCheckbox::Update(float dt)
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
+				check = !check;
 			}
 
 			//
@@ -72,6 +73,7 @@ bool GuiCheckbox::Draw(Render* render)
 		break;
 	case GuiControlState::NORMAL:
 		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+		render->DrawTexture(texture, bounds.x - 20, bounds.y);
 		break;
 	case GuiControlState::FOCUSED:
 		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);

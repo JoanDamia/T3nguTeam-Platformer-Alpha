@@ -100,3 +100,7 @@ uint Window::GetScale() const
 {
 	return scale;
 }
+
+void Window::WindowsMode(bool fullscreen) {
+	window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_SHOWN);
+}

@@ -278,6 +278,7 @@ bool Render::DrawText(int x, int y, const char* text) {
 
 
 
+
 // L03: DONE 6: Implement a method to load the state
 // for now load camera's x and y
 bool Render::LoadState(pugi::xml_node& data)

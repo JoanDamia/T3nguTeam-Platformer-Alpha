@@ -4,7 +4,7 @@
 #include "audio.h"
 #include "log.h"
 
-GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::SLIDER, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -63,7 +63,7 @@ bool GuiSlider::Update(float dt)
 bool GuiSlider::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
-	SDL_Rect copyBounds;
+	SDL_Rect copyBounds = SDL_Rect();
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
@@ -76,7 +76,7 @@ bool GuiSlider::Draw(Render* render)
 		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
 		break;
 	case GuiControlState::PRESSED:
-		copyBounds.w *= sliderValue;
+		copyBounds.w = (float)copyBounds.w * sliderValue;
 		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
 
 		break;
