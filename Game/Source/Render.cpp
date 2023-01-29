@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Window.h"
 #include "Render.h"
+#include "Textures.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -48,6 +49,9 @@ bool Render::Awake(pugi::xml_node& config)
 		camera.x = 0;
 		camera.y = 0;
 	}
+	pugi::xml_node node = config.next_sibling("scene");
+	const char* textPath = node.child("text").attribute("texturepath").as_string();
+	textTexture = app->tex->Load(textPath);
 
 	return ret;
 }
@@ -232,13 +236,13 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 	return ret;
 }
 
-bool Render::DrawText(int x, int y, char* text) {
+bool Render::DrawText(int x, int y, const char* text) {
 
 	SDL_Rect rect;
 	rect.w = 8;
 	rect.h = 10;
 
-	for (int i = 0; text[i] != '\0' ; i++) {
+	for (int i = 0; text[i] != '\0'; i++) {
 		char c = text[i];
 		if (c >= 'A' && c <= 'J') {
 			c -= 'A';
@@ -261,10 +265,13 @@ bool Render::DrawText(int x, int y, char* text) {
 			rect.y = rect.h * 3;
 		}
 
-		DrawTexture(textTexture, x, y, &rect);
+		app->render->DrawTexture(textTexture, x, y, &rect);
 		x += rect.w;
 	}
+	return true;
 }
+
+
 
 // L03: DONE 6: Implement a method to load the state
 // for now load camera's x and y
@@ -272,7 +279,7 @@ bool Render::LoadState(pugi::xml_node& data)
 {
 	camera.x = data.child("camera").attribute("x").as_int();
 	camera.y = data.child("camera").attribute("y").as_int();
-
+	
 	return true;
 }
 

@@ -44,6 +44,21 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->parameters = config.child("menu");
 	menu->Disable();
 	menu->alpha = 255.0f;
+
+
+	background->Disable();
+	menu->Enable();
+	currentScene = MAINMENU;
+	menu->alpha = 0.0f;
+
+	SDL_Rect rect;
+	rect.x = 70;
+	rect.y = 100;
+	rect.w = 20;
+	rect.h = 10;
+
+	newGame = new GuiButton(0, rect, "NEWGAME");
+
 	return ret;
 }
 
@@ -162,6 +177,10 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate(float dt)
 {
+
+	newGame->Update(dt);
+	newGame->Draw(app->render);
+
 	bool ret = true;
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -180,3 +199,4 @@ bool Scene::CleanUp()
 
 	return true;
 }
+

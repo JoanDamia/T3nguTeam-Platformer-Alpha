@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Item.h"
 #include "Background.h"
+#include "GuiButton.h"
 
 struct SDL_Texture;
 
@@ -35,6 +36,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	
+
 public:
 
 	//L02: DONE 3: Declare a Player attribute 
@@ -46,6 +49,7 @@ public:
 	//SDL_Texture* title_screen;
 	//int current_lvl = 0;
 	//float x = 50, y = 500;
+	
 
 private:
 	SDL_Texture* img;
@@ -61,7 +65,7 @@ private:
 	};
 	Scenes currentScene = (Scenes)0;
 
-
+	GuiButton* newGame;
 	//bool go_black = false;
 	//bool return_black = false;
 	//int fade_speed = 2;

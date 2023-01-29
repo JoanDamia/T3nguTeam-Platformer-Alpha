@@ -13,7 +13,8 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	UNKNOWN,
-	BACKGROUND
+	BACKGROUND,
+	TEXT
 };
 
 class Entity

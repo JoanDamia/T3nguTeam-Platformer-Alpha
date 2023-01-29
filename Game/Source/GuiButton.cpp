@@ -3,6 +3,7 @@
 #include "app.h"
 #include "audio.h"
 #include "log.h"
+#include "iostream"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -28,6 +29,7 @@ bool GuiButton::Update(float dt)
 		app->input->GetMousePosition(mouseX, mouseY);
 
 		GuiControlState previousstate = state;
+		std::cout << "Mouse X: " << mouseX << " | Bounds X: " << bounds.x << std::endl;
 
 		// i'm inside the limitis of the button
 		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
@@ -79,7 +81,8 @@ bool GuiButton::Draw(Render* render)
 		break;
 	}
 
-	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
+	//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
+	app->render->DrawText(bounds.x, bounds.y, text.GetString());
 
 	return false;
 }

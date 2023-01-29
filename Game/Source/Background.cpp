@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "iostream"
+#include "GuiButton.h"
 
 
 
@@ -33,12 +34,15 @@ bool Background::Start() {
 
 }
 
+
 bool Background::Awake() {
-	//initilize textures
+
 	return true;
 }
 
-bool Background::PostUpdate(float dt) {
+
+
+bool Background::Update(float dt) {
 
 	SDL_Rect windowsSize = app->render->GetViewPort();
 	app->render->DrawRectangle(windowsSize, 0,0,0);
@@ -46,7 +50,6 @@ bool Background::PostUpdate(float dt) {
 	position.y = (windowsSize.h / 2.0f) - sizeY;
 	app->render->DrawTexture(texture, position.x, position.y);
 	app->render->DrawRectangle(windowsSize, 0, 0, 0, alpha);
-
 	return true;
 
 }

@@ -97,6 +97,8 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	case EntityType::BACKGROUND:
 		entity = new Background();
 		break;
+	case EntityType::TEXT:
+
 
 	default: break;
 	}
