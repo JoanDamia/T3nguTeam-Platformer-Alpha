@@ -3159,7 +3159,7 @@
    <tile gid="94"/>
   </data>
  </layer>
- <layer id="2" name="Colisions" width="64" height="24" visible="0">
+ <layer id="2" name="Colisions" width="64" height="24">
   <properties>
    <property name="Draw" type="bool" value="false"/>
   </properties>

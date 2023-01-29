@@ -25,7 +25,6 @@ Background::~Background() {
 
 
 bool Background::Start() {
-	app->win->WindowsMode(true);
 	texturePath = parameters.attribute("texturepath").as_string();
 	texture = app->tex->Load(texturePath);
 	SDL_QueryTexture(texture, NULL, NULL, &sizeX, &sizeY);
@@ -77,5 +76,5 @@ void Background::FadeIn(float dt)
 			alpha = 0.0f;
 		}
 	}
-	std::cout << alpha << std::endl;
+	
 }

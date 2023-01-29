@@ -39,7 +39,7 @@
     <text texturepath="Assets/Textures/Menu/Text/texto.png"/>
     <exit texturepath="Assets/Textures/Menu/Buttons/Close.png"/>
     <checkbox texturepath ="Assets/Textures/Menu/Buttons/tick.png"/>
-    <credits texturepaths="Assets/Textures/credits.png"/>
+    <credits texturepath="Assets/Textures/credits.png"/>
   </scene>
 
   <map>

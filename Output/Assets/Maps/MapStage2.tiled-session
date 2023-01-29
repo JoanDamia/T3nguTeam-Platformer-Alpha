@@ -3,18 +3,18 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "MapStage2.tmx",
+    "activeFile": "MapTemplate.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "Todos los archivos (*)",
     "fileStates": {
         "MapStage2.tmx": {
-            "scale": 0.5,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 638,
-                "y": 165
+                "x": 901.3333333333333,
+                "y": 359.33333333333337
             }
         },
         "MapStage2.tmx#MapMetadata": {
@@ -38,11 +38,11 @@
             "scaleInDock": 1
         },
         "MapTemplate.tmx": {
-            "scale": 0.173486328125,
-            "selectedLayer": 0,
+            "scale": 0.75,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1026.017450042218,
-                "y": -409.2541514213341
+                "x": 198.66666666666666,
+                "y": 489.3333333333333
             }
         },
         "MapTemplate.tmx#Background2": {
@@ -89,10 +89,10 @@
     ],
     "project": "MapStage2.tiled-project",
     "recentFiles": [
-        "MapTemplate.tmx",
-        "Terrain (16x16).tsx",
         "sky.tsx",
         "MapStage2.tmx",
+        "Terrain (16x16).tsx",
+        "MapTemplate.tmx",
         "MapTemplate - copia.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

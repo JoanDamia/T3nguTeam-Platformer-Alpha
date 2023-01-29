@@ -61,7 +61,7 @@ private:
 	Uint8 healthPoints = 3;
 	bool djump = true;
 	bool inAir = true;
-	float jumpForce = 20.0f;
+	float jumpForce = 10.0f;
 	int w = 20, h = 32;
 	b2Vec2
 		oposPlayer,

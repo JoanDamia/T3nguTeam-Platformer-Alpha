@@ -1,6 +1,6 @@
 #include "Window.h"
 #include "App.h"
-
+#include "Render.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -102,5 +102,12 @@ uint Window::GetScale() const
 }
 
 void Window::WindowsMode(bool fullscreen) {
-	window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_SHOWN);
+	//window = SDL_CreateWindow(app->GetTitle(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_SHOWN);
+	//screenSurface = SDL_GetWindowSurface(window);
+	//Uint32 flags = SDL_RENDERER_ACCELERATED;
+	//if (vsync) {
+	//	flags |= SDL_RENDERER_PRESENTVSYNC;
+	//}
+	//app->render->renderer = SDL_CreateRenderer(app->win->window, -1, flags);
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 }

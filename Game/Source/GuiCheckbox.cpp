@@ -65,7 +65,9 @@ bool GuiCheckbox::Update(float dt)
 bool GuiCheckbox::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
-
+	if (state == GuiControlState::DISABLED) {
+		return true;
+	}
 	switch (state)
 	{
 	case GuiControlState::DISABLED:

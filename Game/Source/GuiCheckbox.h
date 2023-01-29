@@ -24,9 +24,10 @@ public:
 	bool drawBasic = false;
 
 	uint audioFxId;
+	bool check = false;
 private:
 	SDL_Texture* texture;
-	bool check = false;
+	
 };
 
 #endif // __GUIBUTTON_H__

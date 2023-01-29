@@ -47,6 +47,7 @@ public:
 	Player* player;
 	Background* background;
 	Background* menu;
+	Background* _credits;
 	
 		 
 	//SDL_Texture* title_screen;
@@ -65,6 +66,7 @@ private:
 		MAINMENU,
 		SETTINGS,
 		CREDITS,
+		PAUSEMENU,
 		LVL1,
 		LVL2 
 	};
@@ -73,6 +75,9 @@ private:
 
 	GuiButton* newGame;
 	GuiButton* _continue;
+	GuiButton* resume;
+	GuiButton* backToTitle;
+	GuiButton* inGameSettings;
 	GuiButton* settings;
 	GuiSlider* musicVolume;
 	GuiSlider* fxVolume;

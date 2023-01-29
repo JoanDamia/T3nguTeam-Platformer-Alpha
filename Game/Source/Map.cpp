@@ -4,6 +4,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Enemies.h"
+#include "iostream"
 
 #include "Defs.h"
 #include "Log.h"
@@ -38,6 +39,29 @@ bool Map::Awake(pugi::xml_node& config)
     destination = iPoint(0, 20);
 
     return ret;
+}
+
+bool Map::Start() {
+
+    for (ListItem<MapLayer*>* mapLayerItem = mapData.maplayers.start; mapLayerItem != NULL; mapLayerItem = mapLayerItem->next) {
+        for (int x = 0; x < mapLayerItem->data->width; x++)
+        {
+            for (int y = 0; y < mapLayerItem->data->height; y++)
+            {
+                int gid = mapLayerItem->data->Get(x, y);
+
+                if (gid > 0) {
+                    TileSet* tileset = GetTilesetFromTileId(gid);
+                    tileset->name;
+                    std::cout << tileset->name.GetString() << std::endl;
+                    if (tileset->name == "Colisions") {
+                    }
+                }
+                
+            }
+        }
+    }
+    return true;
 }
 
 // L12: Create walkability map for pathfinding
@@ -107,6 +131,8 @@ void Map::Draw()
 {
     if (mapLoaded == false)
         return;
+
+
 
     /*
     // L04: DONE 6: Iterate all tilesets and draw all their

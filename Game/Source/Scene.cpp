@@ -35,8 +35,8 @@ bool Scene::Awake(pugi::xml_node& config)
 	}
 
 	//L02: DONE 3: Instantiate the player using the entity manager
-	//player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-	//player->parameters = config.child("player");
+	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+	player->parameters = config.child("player");
 
 	background = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);//creamos entidad background
 	background->parameters = config.child("background");
@@ -45,14 +45,15 @@ bool Scene::Awake(pugi::xml_node& config)
 	menu->Disable();
 	menu->alpha = 255.0f;
 	pugi::xml_node node = config.child("checkbox");
-
 	SDL_Texture* textureCheckbox = app->tex->Load(node.attribute("texturepath").as_string());
+	_credits = (Background*)app->entityManager->CreateEntity(EntityType::BACKGROUND);
+	_credits->parameters = config.child("credits");
 
+	_credits->Disable();
+	background->Enable();
+	menu->Disable();
+	currentScene = LOGO;
 
-	background->Disable();
-	menu->Enable();
-	currentScene = MAINMENU;
-	menu->alpha = 0.0f;
 
 	SDL_Rect rect;
 	rect.x = 450;
@@ -60,72 +61,81 @@ bool Scene::Awake(pugi::xml_node& config)
 	rect.w = 55;
 	rect.h = 10;
 	newGame = new GuiButton(0, rect, "NEWGAME");
-	newGame->text = "newGame";
 	newGame->SetObserver(this);
+	newGame->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
 	rect.y = 450;
 	rect.w = 55;
 	rect.h = 10;
 	_continue = new GuiButton(1, rect, "CONTINUE");
-	_continue->text = "continue";
+	
 	_continue->SetObserver(this);
+	_continue->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
 	settings = new GuiButton(2, rect, "SETTINGS");
-	settings->text = "settings";
 	settings->SetObserver(this);
+	settings->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
-	rect.y = 500;
+	rect.y = 400;
 	rect.w = 55;
 	rect.h = 10;
 	musicVolume = new GuiSlider(3, rect, "MUSIC");
-	musicVolume->text = "musicVolume";
 	musicVolume->SetObserver(this);
+	musicVolume->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
-	rect.y = 500;
+	rect.y = 450;
 	rect.w = 55;
 	rect.h = 10;
 	fxVolume = new GuiSlider(4, rect, "FX");
-	fxVolume->text = "fxVolume";
 	fxVolume->SetObserver(this);
+	fxVolume->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
 	rect.y = 500;
 	rect.w = 55;
 	rect.h = 10;
 	fullscreen = new GuiCheckbox(5, rect, "FULLSCREEN", textureCheckbox);
-	fullscreen->text = "fullscreen";
 	fullscreen->SetObserver(this);
+	fullscreen->state = GuiControlState::DISABLED;
 
-	rect.x = 450;
-	rect.y = 500;
-	rect.w = 55;
-	rect.h = 10;
-	vsync = new GuiCheckbox(6, rect, "VSYNC", textureCheckbox);
-	vsync->text = "vsync";
-	vsync->SetObserver(this);
 
 	rect.x = 450;
 	rect.y = 550;
 	rect.w = 55;
 	rect.h = 10;
-	back = new GuiButton(7, rect, "BACK");
-	back->text = "back";
+	vsync = new GuiCheckbox(6, rect, "VSYNC", textureCheckbox);
+	vsync->SetObserver(this);
+	vsync->state = GuiControlState::DISABLED;
+
+
+	rect.x = 450;
+	rect.y = 600;
+	rect.w = 55;
+	rect.h = 10;
+	back = new GuiButton(17, rect, "BACK");
 	back->SetObserver(this);
+	back->state = GuiControlState::DISABLED;
+
 
 	rect.x = 450;
 	rect.y = 550;
 	rect.w = 55;
 	rect.h = 10;
 	exit = new GuiButton(8, rect, "EXIT");
-	exit->text = "exit";
 	exit->SetObserver(this);
+	exit->state = GuiControlState::DISABLED;
 
 
 	rect.x = 450;
@@ -133,10 +143,16 @@ bool Scene::Awake(pugi::xml_node& config)
 	rect.w = 55;
 	rect.h = 10;
 	credits = new GuiButton(9, rect, "CREDITS");
-	credits->text = "credits";
 	credits->SetObserver(this);
+	credits->state = GuiControlState::DISABLED;
 
-
+	rect.x = 450;
+	rect.y = 600;
+	rect.w = 55;
+	rect.h = 10;
+	inGameSettings = new GuiButton(10, rect, "SETTINGS");
+	inGameSettings->SetObserver(this);
+	inGameSettings->state = GuiControlState::DISABLED;
 	return ret;
 }
 
@@ -182,6 +198,7 @@ bool Scene::PreUpdate(float dt)
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	switch (currentScene) {
 	case LOGO:
 		background->FadeOut(dt);
@@ -199,11 +216,15 @@ bool Scene::Update(float dt)
 			
 		}
 	case MAINMENU:
+		newGame->state = GuiControlState::NORMAL;
+		_continue->state = GuiControlState::NORMAL;
+		settings->state = GuiControlState::NORMAL;
+		credits->state = GuiControlState::NORMAL;
+		exit->state = GuiControlState::NORMAL;
 		musicVolume->state = GuiControlState::DISABLED;
 		fxVolume->state = GuiControlState::DISABLED;
 		fullscreen->state = GuiControlState::DISABLED;
 		vsync->state = GuiControlState::DISABLED;
-
 		break;
 	case SETTINGS:
 		musicVolume->state = GuiControlState::NORMAL;
@@ -215,11 +236,36 @@ bool Scene::Update(float dt)
 		newGame->state = GuiControlState::DISABLED;
 		credits->state = GuiControlState::DISABLED;
 		exit->state = GuiControlState::DISABLED;
+		break;
 	case CREDITS:
+		_credits->Enable();
+		back->state = GuiControlState::NORMAL;
+		_continue->state = GuiControlState::DISABLED;
+		newGame->state = GuiControlState::DISABLED;
+		credits->state = GuiControlState::DISABLED;
+		exit->state = GuiControlState::DISABLED;
+		break;
+	case LVL1:
+		player->Enable();
+		menu->Disable();
+		uint x, y;
+		app->win->GetWindowSize(x, y);
+		app->render->camera.x = -(app->scene->player->position.x + (x / 2));
+		app->render->camera.x = -app->scene->player->position.x + (x / 2);
+		settings->state = GuiControlState::DISABLED;
+		exit->state = GuiControlState::DISABLED;
+		_continue->state = GuiControlState::DISABLED;
+		newGame->state = GuiControlState::DISABLED;
+		credits->state = GuiControlState::DISABLED;
+		exit->state = GuiControlState::DISABLED;
 		break;
 
+	case LVL2:
 
+		break;
 
+	case PAUSEMENU:
+		break;
 	}
 
 
@@ -236,7 +282,7 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		app->render->camera.y += 1;
 
-	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_RFEPEAT)
 		app->render->camera.y -= 1;
 
 	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -249,11 +295,9 @@ bool Scene::Update(float dt)
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	//Make the camera follow the player
-	uint x, y;
-	app->win->GetWindowSize(x, y);
-	//app->render->camera.x = -(app->scene->player->position.x + (x / 2));
+	
+	
 
-	//app->render->camera.x = -app->scene->player->position.x + (x / 2);
 
 	if (app->render->camera.x > 0) {
 		app->render->camera.x = 0;
@@ -291,6 +335,9 @@ bool Scene::PostUpdate(float dt)
 	exit->Draw(app->render);
 	credits->Update(dt);
 	credits->Draw(app->render);
+	inGameSettings->Update(dt);
+	inGameSettings->Draw(app->render);
+
 
 	bool ret = true;
 
@@ -313,35 +360,37 @@ bool Scene::CleanUp()
 
 bool Scene::OnGuiMouseClickEvent(GuiControl* control) {
 	SString text = control->text;
-	if (text == "settings") {
+	if (text == "SETTINGS") {
 		currentScene = SETTINGS;
 	}
-	else if (text == "newGame") {
+	else if (text == "NEWGAME") {
 		currentScene = LVL1;
 	}
-	else if (text == "continue") {
+	else if (text == "CONTINUE") {
 		app->LoadFromFile();
 	}
-	else if (text == "musicVolume") {
+	else if (text == "MUSICVOLUME") {
 		//TODOcurrentScene = ;
 	}
-	else if (text == "fxVolume") {
+	else if (text == "FX") {
 		//TODO
 	}
-	else if (text == "fullscreen") {
-		currentScene = LVL1;
+	else if (text == "FULLSCREEN") {
+		app->win->WindowsMode(fullscreen->check);
 	}
-	else if (text == "vsync") {
-		currentScene = LVL1;
+	else if (text == "VSYNC") {
+		//TODO
 	}
-	else if (text == "back") {
-		currentScene = LVL1;
+	else if (text == "BACK") {
+		_credits->Disable();
+		currentScene = MAINMENU;
 	}
-	else if (text == "exit") {
-		currentScene = LVL1;
+	else if (text == "EXIT") {
+		//TODO
 	}
-	else if (text == "credits") {
-		currentScene = LVL1;
+	else if (text == "CREDITS") {
+		currentScene = CREDITS;
 	}
+
 	return true;
 }

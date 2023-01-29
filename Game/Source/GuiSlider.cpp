@@ -64,6 +64,9 @@ bool GuiSlider::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
 	SDL_Rect copyBounds = SDL_Rect();
+	if (state == GuiControlState::DISABLED) {
+		return true;
+	}
 	switch (state)
 	{
 	case GuiControlState::DISABLED:

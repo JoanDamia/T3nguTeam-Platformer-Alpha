@@ -24,12 +24,14 @@ enum MainState
 };
 
 App* app = NULL;
+MainState state = CREATE;
+
 
 int main(int argc, char* args[])
 {
 	LOG("Engine starting ...");
 
-	MainState state = CREATE;
+	
 	int result = EXIT_FAILURE;
 
 	while(state != EXIT)
