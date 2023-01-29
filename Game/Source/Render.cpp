@@ -264,6 +264,11 @@ bool Render::DrawText(int x, int y, const char* text) {
 			rect.x = c * rect.w;
 			rect.y = rect.h * 3;
 		}
+		SDL_Rect rect1 = rect;
+		rect1.w = 400;
+		//SDL_RenderCopy(renderer, textTexture, NULL, &rect1);
+
+
 
 		app->render->DrawTexture(textTexture, x, y, &rect);
 		x += rect.w;

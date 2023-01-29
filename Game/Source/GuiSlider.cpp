@@ -1,11 +1,10 @@
-#include "guibutton.h"
+#include "GuiSlider.h"
 #include "render.h"
 #include "app.h"
 #include "audio.h"
 #include "log.h"
-#include "iostream"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -16,12 +15,12 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	audioFxId = app->audio->LoadFx("assets/audio/fx/retro-video-game-coin-pickup-38299.ogg");
 }
 
-GuiButton::~GuiButton()
+GuiSlider::~GuiSlider()
 {
 
 }
 
-bool GuiButton::Update(float dt)
+bool GuiSlider::Update(float dt)
 {
 	if (state != GuiControlState::DISABLED)
 	{
@@ -30,7 +29,6 @@ bool GuiButton::Update(float dt)
 
 		GuiControlState previousstate = state;
 		
-
 		// i'm inside the limitis of the button
 		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
 			mouseY >= bounds.y && mouseY <= bounds.y + bounds.h) {
@@ -43,6 +41,7 @@ bool GuiButton::Update(float dt)
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
+				sliderValue = (mouseX - bounds.x) / (bounds.x + bounds.w);
 			}
 
 			//
@@ -61,10 +60,10 @@ bool GuiButton::Update(float dt)
 
 
 
-bool GuiButton::Draw(Render* render)
+bool GuiSlider::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
-
+	SDL_Rect copyBounds;
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
@@ -77,8 +76,11 @@ bool GuiButton::Draw(Render* render)
 		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
 		break;
 	case GuiControlState::PRESSED:
+		copyBounds.w *= sliderValue;
 		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+
 		break;
+
 	}
 
 	//app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });

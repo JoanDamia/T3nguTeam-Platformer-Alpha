@@ -1,11 +1,11 @@
-#include "guibutton.h"
+#include "GuiCheckbox.h"
 #include "render.h"
 #include "app.h"
 #include "audio.h"
 #include "log.h"
-#include "iostream"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+
+GuiCheckbox::GuiCheckbox(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -16,12 +16,12 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	audioFxId = app->audio->LoadFx("assets/audio/fx/retro-video-game-coin-pickup-38299.ogg");
 }
 
-GuiButton::~GuiButton()
+GuiCheckbox::~GuiCheckbox()
 {
 
 }
 
-bool GuiButton::Update(float dt)
+bool GuiCheckbox::Update(float dt)
 {
 	if (state != GuiControlState::DISABLED)
 	{
@@ -29,7 +29,7 @@ bool GuiButton::Update(float dt)
 		app->input->GetMousePosition(mouseX, mouseY);
 
 		GuiControlState previousstate = state;
-		
+
 
 		// i'm inside the limitis of the button
 		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
@@ -61,7 +61,7 @@ bool GuiButton::Update(float dt)
 
 
 
-bool GuiButton::Draw(Render* render)
+bool GuiCheckbox::Draw(Render* render)
 {
 	//l15: done 4: draw the button according the guicontrol state
 

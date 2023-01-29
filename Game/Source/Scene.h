@@ -36,6 +36,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
 	
 
 public:
@@ -60,12 +61,24 @@ private:
 		LOGO = 0,
 		MAINMENUENTRY,
 		MAINMENU,
+		SETTINGS,
 		LVL1,
 		LVL2 
 	};
 	Scenes currentScene = (Scenes)0;
 
+
 	GuiButton* newGame;
+	GuiButton* _continue;
+	GuiButton* settings;
+	GuiSlider* musicVolume;
+	GuiSlider* fxVolume;
+	GuiCheckbox* fullscreen;
+	GuiButton* back;
+	GuiCheckbox* vsync;
+	GuiButton* exit;
+	GuiButton* credits;
+
 	//bool go_black = false;
 	//bool return_black = false;
 	//int fade_speed = 2;
